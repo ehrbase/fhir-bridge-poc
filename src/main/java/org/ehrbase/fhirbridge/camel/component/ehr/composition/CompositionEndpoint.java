@@ -11,89 +11,92 @@ import org.ehrbase.client.openehrclient.OpenEhrClient;
 import org.ehrbase.fhirbridge.camel.component.ehr.EhrConfiguration;
 import org.ehrbase.fhirbridge.ehr.Composition;
 
-@UriEndpoint(firstVersion = "1.0.0", scheme = "ehr-composition", title = "EHR Composition", syntax = "ehr-composition:name", producerOnly = true)
+@UriEndpoint(
+    firstVersion = "1.0.0",
+    scheme = "ehr-composition",
+    title = "EHR Composition",
+    syntax = "ehr-composition:name",
+    producerOnly = true)
 @SuppressWarnings({"java:S2160", "java:S1452"})
 public class CompositionEndpoint extends DefaultEndpoint {
 
-    @UriPath
-    private String name;
+  @UriPath private String name;
 
-    @UriParam
-    private CompositionOperation operation;
+  @UriParam private CompositionOperation operation;
 
-    @UriParam
-    private CompositionConverter<Composition, Object> compositionConverter;
+  @UriParam private CompositionConverter<Composition, Object> compositionConverter;
 
-    private Class<?> expectedType;
+  private Class<?> expectedType;
 
-    @UriParam
-    private EhrConfiguration configuration;
+  @UriParam private EhrConfiguration configuration;
 
-    public CompositionEndpoint(String uri, CompositionComponent component, EhrConfiguration configuration) {
-        super(uri, component);
-        this.configuration = configuration;
-    }
+  public CompositionEndpoint(
+      String uri, CompositionComponent component, EhrConfiguration configuration) {
+    super(uri, component);
+    this.configuration = configuration;
+  }
 
-    @Override
-    public Producer createProducer() {
-        return new CompositionProducer(this);
-    }
+  @Override
+  public Producer createProducer() {
+    return new CompositionProducer(this);
+  }
 
-    @Override
-    public Consumer createConsumer(Processor processor) {
-        throw new UnsupportedOperationException("Cannot consume from Composition endpoint");
-    }
+  @Override
+  public Consumer createConsumer(Processor processor) {
+    throw new UnsupportedOperationException("Cannot consume from Composition endpoint");
+  }
 
-    @Override
-    public boolean isSingleton() {
-        return true;
-    }
+  @Override
+  public boolean isSingleton() {
+    return true;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public CompositionOperation getOperation() {
-        return operation;
-    }
+  public CompositionOperation getOperation() {
+    return operation;
+  }
 
-    public void setOperation(CompositionOperation operation) {
-        this.operation = operation;
-    }
+  public void setOperation(CompositionOperation operation) {
+    this.operation = operation;
+  }
 
-    public CompositionConverter<Composition, Object> getCompositionConverter() {
-        return compositionConverter;
-    }
+  public CompositionConverter<Composition, Object> getCompositionConverter() {
+    return compositionConverter;
+  }
 
-    public void setCompositionConverter(CompositionConverter<Composition, Object> compositionConverter) {
-        this.compositionConverter = compositionConverter;
-    }
+  public void setCompositionConverter(
+      CompositionConverter<Composition, Object> compositionConverter) {
+    this.compositionConverter = compositionConverter;
+  }
 
-    public Class<?> getExpectedType() {
-        return expectedType;
-    }
+  public Class<?> getExpectedType() {
+    return expectedType;
+  }
 
-    public void setExpectedType(Class<?> expectedType) {
-        this.expectedType = expectedType;
-    }
+  public void setExpectedType(Class<?> expectedType) {
+    this.expectedType = expectedType;
+  }
 
-    public EhrConfiguration getConfiguration() {
-        return configuration;
-    }
+  public EhrConfiguration getConfiguration() {
+    return configuration;
+  }
 
-    public void setConfiguration(EhrConfiguration configuration) {
-        this.configuration = configuration;
-    }
+  public void setConfiguration(EhrConfiguration configuration) {
+    this.configuration = configuration;
+  }
 
-    public OpenEhrClient getOpenEhrClient() {
-        return getConfiguration().getOpenEhrClient();
-    }
+  public OpenEhrClient getOpenEhrClient() {
+    return getConfiguration().getOpenEhrClient();
+  }
 
-    public void setOpenEhrClient(OpenEhrClient openEhrClient) {
-        getConfiguration().setOpenEhrClient(openEhrClient);
-    }
+  public void setOpenEhrClient(OpenEhrClient openEhrClient) {
+    getConfiguration().setOpenEhrClient(openEhrClient);
+  }
 }

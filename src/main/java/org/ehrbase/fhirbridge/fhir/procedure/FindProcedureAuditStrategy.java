@@ -10,14 +10,16 @@ import org.openehealth.ipf.commons.ihe.fhir.support.OperationOutcomeOperations;
 
 public class FindProcedureAuditStrategy extends FhirQueryAuditStrategy {
 
-    public FindProcedureAuditStrategy(boolean serverSide) {
-        super(serverSide, OperationOutcomeOperations.INSTANCE);
-    }
+  public FindProcedureAuditStrategy(boolean serverSide) {
+    super(serverSide, OperationOutcomeOperations.INSTANCE);
+  }
 
-    @Override
-    public AuditMessage[] makeAuditMessage(AuditContext auditContext, FhirQueryAuditDataset auditDataset) {
-        return new QueryInformationBuilder<>(auditContext, auditDataset, FhirBridgeEventType.FindPatient)
-                .addPatients(auditDataset.getPatientIds())
-                .getMessages();
-    }
+  @Override
+  public AuditMessage[] makeAuditMessage(
+      AuditContext auditContext, FhirQueryAuditDataset auditDataset) {
+    return new QueryInformationBuilder<>(
+            auditContext, auditDataset, FhirBridgeEventType.FindPatient)
+        .addPatients(auditDataset.getPatientIds())
+        .getMessages();
+  }
 }

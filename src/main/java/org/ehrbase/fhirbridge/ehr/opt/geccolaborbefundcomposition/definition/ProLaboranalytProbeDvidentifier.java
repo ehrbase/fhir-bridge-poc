@@ -8,14 +8,14 @@ import org.ehrbase.client.annotations.Path;
 @Entity
 @OptionFor("DV_IDENTIFIER")
 public class ProLaboranalytProbeDvidentifier implements ProLaboranalytProbeChoice {
-    @Path("")
-    private DvIdentifier probe;
+  @Path("")
+  private DvIdentifier probe;
 
-    public void setProbe(DvIdentifier probe) {
-        this.probe = probe;
-    }
+  public void setProbe(DvIdentifier probe) {
+    this.probe = probe;
+  }
 
-    public DvIdentifier getProbe() {
-        return this.probe;
-    }
+  public DvIdentifier getProbe() {
+    return this.probe;
+  }
 }

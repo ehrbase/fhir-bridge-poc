@@ -7,14 +7,14 @@ import org.ehrbase.client.annotations.Path;
 @Entity
 @OptionFor("DV_TEXT")
 public class ProbeEignungZumTestenDvtext implements ProbeEignungZumTestenChoice {
-    @Path("|value")
-    private String eignungZumTestenValue;
+  @Path("|value")
+  private String eignungZumTestenValue;
 
-    public void setEignungZumTestenValue(String eignungZumTestenValue) {
-        this.eignungZumTestenValue = eignungZumTestenValue;
-    }
+  public void setEignungZumTestenValue(String eignungZumTestenValue) {
+    this.eignungZumTestenValue = eignungZumTestenValue;
+  }
 
-    public String getEignungZumTestenValue() {
-        return this.eignungZumTestenValue;
-    }
+  public String getEignungZumTestenValue() {
+    return this.eignungZumTestenValue;
+  }
 }

@@ -3,39 +3,43 @@ package org.ehrbase.fhirbridge.ehr.opt.intensivmedizinischesmonitoringkorpertemp
 import org.ehrbase.client.classgenerator.EnumValueSet;
 
 public enum KorperexpositionDefiningcode implements EnumValueSet {
-    NACKT("Nackt", "Keine Kleidung, Bettzeug oder andere Bedeckung.", "local", "at0031"),
+  NACKT("Nackt", "Keine Kleidung, Bettzeug oder andere Bedeckung.", "local", "at0031"),
 
-    BETTZEUG("Verminderte Kleidung/Bettzeug", "Die Person wird bedeckt von einer geringeren Menge an Kleidung oder Bettzeug als für die Umgebungsbedingungen angemessen erscheint.", "local", "at0032");
+  BETTZEUG(
+      "Verminderte Kleidung/Bettzeug",
+      "Die Person wird bedeckt von einer geringeren Menge an Kleidung oder Bettzeug als für die Umgebungsbedingungen angemessen erscheint.",
+      "local",
+      "at0032");
 
-    private String value;
+  private String value;
 
-    private String description;
+  private String description;
 
-    private String terminologyId;
+  private String terminologyId;
 
-    private String code;
+  private String code;
 
-    KorperexpositionDefiningcode(String value, String description, String terminologyId,
-                                 String code) {
-        this.value = value;
-        this.description = description;
-        this.terminologyId = terminologyId;
-        this.code = code;
-    }
+  KorperexpositionDefiningcode(
+      String value, String description, String terminologyId, String code) {
+    this.value = value;
+    this.description = description;
+    this.terminologyId = terminologyId;
+    this.code = code;
+  }
 
-    public String getValue() {
-        return this.value;
-    }
+  public String getValue() {
+    return this.value;
+  }
 
-    public String getDescription() {
-        return this.description;
-    }
+  public String getDescription() {
+    return this.description;
+  }
 
-    public String getTerminologyId() {
-        return this.terminologyId;
-    }
+  public String getTerminologyId() {
+    return this.terminologyId;
+  }
 
-    public String getCode() {
-        return this.code;
-    }
+  public String getCode() {
+    return this.code;
+  }
 }

@@ -13,8 +13,8 @@ public enum AussageUberDenAusschlussDefiningcode implements EnumValueSet {
 
   private String code;
 
-  AussageUberDenAusschlussDefiningcode(String value, String description, String terminologyId,
-      String code) {
+  AussageUberDenAusschlussDefiningcode(
+      String value, String description, String terminologyId, String code) {
     this.value = value;
     this.description = description;
     this.terminologyId = terminologyId;
@@ -22,18 +22,18 @@ public enum AussageUberDenAusschlussDefiningcode implements EnumValueSet {
   }
 
   public String getValue() {
-     return this.value ;
+    return this.value;
   }
 
   public String getDescription() {
-     return this.description ;
+    return this.description;
   }
 
   public String getTerminologyId() {
-     return this.terminologyId ;
+    return this.terminologyId;
   }
 
   public String getCode() {
-     return this.code ;
+    return this.code;
   }
 }

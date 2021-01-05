@@ -7,14 +7,14 @@ import org.ehrbase.client.annotations.Path;
 @Entity
 @OptionFor("DV_TEXT")
 public class ProLaboranalytErgebnisStatusDvtext implements ProLaboranalytErgebnisStatusChoice {
-    @Path("|value")
-    private String ergebnisStatusValue;
+  @Path("|value")
+  private String ergebnisStatusValue;
 
-    public void setErgebnisStatusValue(String ergebnisStatusValue) {
-        this.ergebnisStatusValue = ergebnisStatusValue;
-    }
+  public void setErgebnisStatusValue(String ergebnisStatusValue) {
+    this.ergebnisStatusValue = ergebnisStatusValue;
+  }
 
-    public String getErgebnisStatusValue() {
-        return this.ergebnisStatusValue;
-    }
+  public String getErgebnisStatusValue() {
+    return this.ergebnisStatusValue;
+  }
 }

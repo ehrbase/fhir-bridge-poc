@@ -6,15 +6,16 @@ import org.ehrbase.client.annotations.Path;
 
 @Entity
 @OptionFor("DV_TEXT")
-public class AtiopathogeneseDvtext implements AtiopathogeneseOrgEhrbaseEhrEncodeWrappersSnakecase6970140aChoice {
-    @Path("|value")
-    private String value;
+public class AtiopathogeneseDvtext
+    implements AtiopathogeneseOrgEhrbaseEhrEncodeWrappersSnakecase6970140aChoice {
+  @Path("|value")
+  private String value;
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public String getValue() {
-        return this.value;
-    }
+  public String getValue() {
+    return this.value;
+  }
 }

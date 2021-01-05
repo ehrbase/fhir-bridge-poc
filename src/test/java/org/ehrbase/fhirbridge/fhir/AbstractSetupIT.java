@@ -7,6 +7,9 @@ import com.nedap.archie.rm.ehr.EhrStatus;
 import com.nedap.archie.rm.generic.PartySelf;
 import com.nedap.archie.rm.support.identification.HierObjectId;
 import com.nedap.archie.rm.support.identification.PartyRef;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -18,46 +21,44 @@ import org.ehrbase.client.openehrclient.defaultrestclient.DefaultRestClient;
 import org.ehrbase.fhirbridge.ehr.ResourceTemplateProvider;
 import org.junit.jupiter.api.BeforeAll;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.UUID;
-
 abstract class AbstractSetupIT {
 
-    static final String PATIENT_ID_TOKEN = "\\{\\{patientId\\}\\}";
+  static final String PATIENT_ID_TOKEN = "\\{\\{patientId\\}\\}";
 
-    static String PATIENT_ID;
+  static String PATIENT_ID;
 
-    protected final FhirContext context;
+  protected final FhirContext context;
 
-    protected final IGenericClient client;
+  protected final IGenericClient client;
 
-    public AbstractSetupIT() {
-        context = FhirContext.forR4();
-        context.getRestfulClientFactory().setSocketTimeout(60 * 1000);
-        client = context.newRestfulGenericClient("http://localhost:8888/fhir-bridge/fhir/");
-    }
+  public AbstractSetupIT() {
+    context = FhirContext.forR4();
+    context.getRestfulClientFactory().setSocketTimeout(60 * 1000);
+    client = context.newRestfulGenericClient("http://localhost:8888/fhir-bridge/fhir/");
+  }
 
-    @BeforeAll
-    static void setup() throws URISyntaxException {
-        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("myuser", "myPassword432"));
+  @BeforeAll
+  static void setup() throws URISyntaxException {
+    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+    credentialsProvider.setCredentials(
+        AuthScope.ANY, new UsernamePasswordCredentials("myuser", "myPassword432"));
 
-        CloseableHttpClient httpClient = HttpClientBuilder.create()
-                .setDefaultCredentialsProvider(credentialsProvider)
-                .build();
+    CloseableHttpClient httpClient =
+        HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
 
-        DefaultRestClient client = new DefaultRestClient(
-                new OpenEhrClientConfig(new URI("http://localhost:8080/ehrbase/rest/openehr/v1/")),
-                new ResourceTemplateProvider("classpath:/opt/*.opt"),
-                httpClient);
+    DefaultRestClient client =
+        new DefaultRestClient(
+            new OpenEhrClientConfig(new URI("http://localhost:8080/ehrbase/rest/openehr/v1/")),
+            new ResourceTemplateProvider("classpath:/opt/*.opt"),
+            httpClient);
 
-        PATIENT_ID = UUID.randomUUID().toString();
+    PATIENT_ID = UUID.randomUUID().toString();
 
-        EhrStatus ehrStatus = new EhrStatus();
-        ehrStatus.setSubject(new PartySelf(new PartyRef(new HierObjectId(PATIENT_ID), "demographic", "PERSON")));
-        ehrStatus.setArchetypeNodeId("openEHR-EHR-EHR_STATUS.generic.v1");
-        ehrStatus.setName(new DvText("Integration tests status"));
-        client.ehrEndpoint().createEhr(ehrStatus);
-    }
+    EhrStatus ehrStatus = new EhrStatus();
+    ehrStatus.setSubject(
+        new PartySelf(new PartyRef(new HierObjectId(PATIENT_ID), "demographic", "PERSON")));
+    ehrStatus.setArchetypeNodeId("openEHR-EHR-EHR_STATUS.generic.v1");
+    ehrStatus.setName(new DvText("Integration tests status"));
+    client.ehrEndpoint().createEhr(ehrStatus);
+  }
 }

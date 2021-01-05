@@ -14,24 +14,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultExceptionHandler implements ErrorHandler, MessageSourceAware {
 
-    private MessageSourceAccessor messages;
+  private MessageSourceAccessor messages;
 
-    @Override
-    public void process(Exchange exchange) {
-        Exception ex = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+  @Override
+  public void process(Exchange exchange) {
+    Exception ex = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
 
-        if (ex instanceof WrongStatusCodeException) {
-            handleWrongStatusCode((WrongStatusCodeException) ex);
-        }
+    if (ex instanceof WrongStatusCodeException) {
+      handleWrongStatusCode((WrongStatusCodeException) ex);
     }
+  }
 
-    private void handleWrongStatusCode(WrongStatusCodeException ex) {
-        HttpStatus status = HttpStatus.valueOf(ex.getActualStatusCode());
-        throw new UnprocessableEntityException(messages.getMessage("ehrbase.wrongStatusCode", new Object[]{status.value(), status.getReasonPhrase(), ex.getMessage()}), ex);
-    }
+  private void handleWrongStatusCode(WrongStatusCodeException ex) {
+    HttpStatus status = HttpStatus.valueOf(ex.getActualStatusCode());
+    throw new UnprocessableEntityException(
+        messages.getMessage(
+            "ehrbase.wrongStatusCode",
+            new Object[] {status.value(), status.getReasonPhrase(), ex.getMessage()}),
+        ex);
+  }
 
-    @Override
-    public void setMessageSource(@NonNull MessageSource messageSource) {
-        messages = new MessageSourceAccessor(messageSource);
-    }
+  @Override
+  public void setMessageSource(@NonNull MessageSource messageSource) {
+    messages = new MessageSourceAccessor(messageSource);
+  }
 }

@@ -7,15 +7,16 @@ import org.ehrbase.client.annotations.Path;
 
 @Entity
 @OptionFor("DV_INTERVAL")
-public class ProbeZeitpunktDerProbenentnahmeDvinterval implements ProbeZeitpunktDerProbenentnahmeChoice {
-    @Path("")
-    private DvInterval zeitpunktDerProbenentnahme;
+public class ProbeZeitpunktDerProbenentnahmeDvinterval
+    implements ProbeZeitpunktDerProbenentnahmeChoice {
+  @Path("")
+  private DvInterval zeitpunktDerProbenentnahme;
 
-    public void setZeitpunktDerProbenentnahme(DvInterval zeitpunktDerProbenentnahme) {
-        this.zeitpunktDerProbenentnahme = zeitpunktDerProbenentnahme;
-    }
+  public void setZeitpunktDerProbenentnahme(DvInterval zeitpunktDerProbenentnahme) {
+    this.zeitpunktDerProbenentnahme = zeitpunktDerProbenentnahme;
+  }
 
-    public DvInterval getZeitpunktDerProbenentnahme() {
-        return this.zeitpunktDerProbenentnahme;
-    }
+  public DvInterval getZeitpunktDerProbenentnahme() {
+    return this.zeitpunktDerProbenentnahme;
+  }
 }

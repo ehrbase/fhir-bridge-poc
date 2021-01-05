@@ -7,7 +7,7 @@ import org.openehealth.ipf.platform.camel.ihe.fhir.core.custom.CustomFhirCompone
 @SuppressWarnings({"java:S110"})
 public class FindProcedureComponent extends CustomFhirComponent<FhirQueryAuditDataset> {
 
-    public FindProcedureComponent() {
-        super(new FindProcedureTransaction());
-    }
+  public FindProcedureComponent() {
+    super(new FindProcedureTransaction());
+  }
 }

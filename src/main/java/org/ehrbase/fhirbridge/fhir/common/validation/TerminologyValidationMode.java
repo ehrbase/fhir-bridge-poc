@@ -1,10 +1,9 @@
 package org.ehrbase.fhirbridge.fhir.common.validation;
 
 public enum TerminologyValidationMode {
+  EMBEDDED,
 
-    EMBEDDED,
+  SERVER,
 
-    SERVER,
-
-    NONE
+  NONE
 }

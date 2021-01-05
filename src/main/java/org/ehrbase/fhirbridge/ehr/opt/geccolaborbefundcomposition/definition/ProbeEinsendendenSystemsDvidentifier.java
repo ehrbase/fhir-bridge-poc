@@ -8,14 +8,14 @@ import org.ehrbase.client.annotations.Path;
 @Entity
 @OptionFor("DV_IDENTIFIER")
 public class ProbeEinsendendenSystemsDvidentifier implements ProbeEinsendendenSystemsChoice {
-    @Path("")
-    private DvIdentifier einsendendenSystems;
+  @Path("")
+  private DvIdentifier einsendendenSystems;
 
-    public void setEinsendendenSystems(DvIdentifier einsendendenSystems) {
-        this.einsendendenSystems = einsendendenSystems;
-    }
+  public void setEinsendendenSystems(DvIdentifier einsendendenSystems) {
+    this.einsendendenSystems = einsendendenSystems;
+  }
 
-    public DvIdentifier getEinsendendenSystems() {
-        return this.einsendendenSystems;
-    }
+  public DvIdentifier getEinsendendenSystems() {
+    return this.einsendendenSystems;
+  }
 }

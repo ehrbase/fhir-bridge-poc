@@ -7,7 +7,7 @@ import org.openehealth.ipf.platform.camel.ihe.fhir.core.custom.CustomFhirCompone
 @SuppressWarnings({"java:S110"})
 public class FindConditionComponent extends CustomFhirComponent<FhirQueryAuditDataset> {
 
-    public FindConditionComponent() {
-        super(new FindConditionTransaction());
-    }
+  public FindConditionComponent() {
+    super(new FindConditionTransaction());
+  }
 }

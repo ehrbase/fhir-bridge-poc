@@ -11,79 +11,79 @@ import org.apache.camel.spi.UriPath;
 import org.ehrbase.client.openehrclient.OpenEhrClient;
 import org.ehrbase.fhirbridge.camel.component.ehr.EhrConfiguration;
 
-@UriEndpoint(scheme = "ehr-aql", title = "openEHR AQL", syntax = "ehr-aql:name", producerOnly = true)
+@UriEndpoint(
+    scheme = "ehr-aql",
+    title = "openEHR AQL",
+    syntax = "ehr-aql:name",
+    producerOnly = true)
 @SuppressWarnings({"java:S2160", "java:S1452"})
 public class AqlEndpoint extends DefaultEndpoint {
 
-    @UriPath
-    private String name;
+  @UriPath private String name;
 
-    @UriParam
-    private AqlOutputType outputType = AqlOutputType.SelectList;
+  @UriParam private AqlOutputType outputType = AqlOutputType.SelectList;
 
-    @UriParam
-    private RowMapper<?> rowMapper;
+  @UriParam private RowMapper<?> rowMapper;
 
-    @UriParam
-    private EhrConfiguration configuration;
+  @UriParam private EhrConfiguration configuration;
 
-    public AqlEndpoint(String endpointUri, Component component, EhrConfiguration configuration) {
-        super(endpointUri, component);
-        this.configuration = configuration;
-    }
+  public AqlEndpoint(String endpointUri, Component component, EhrConfiguration configuration) {
+    super(endpointUri, component);
+    this.configuration = configuration;
+  }
 
-    @Override
-    public Producer createProducer() {
-        return new AqlProducer(this);
-    }
+  @Override
+  public Producer createProducer() {
+    return new AqlProducer(this);
+  }
 
-    @Override
-    public Consumer createConsumer(Processor processor) {
-        throw new UnsupportedOperationException("Cannot consume from AQL endpoint");
-    }
+  @Override
+  public Consumer createConsumer(Processor processor) {
+    throw new UnsupportedOperationException("Cannot consume from AQL endpoint");
+  }
 
-    @Override
-    public boolean isSingleton() {
-        return true;
-    }
+  @Override
+  public boolean isSingleton() {
+    return true;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public AqlOutputType getOutputType() {
-        return outputType;
-    }
+  public AqlOutputType getOutputType() {
+    return outputType;
+  }
 
-    public void setOutputType(AqlOutputType outputType) {
-        this.outputType = outputType;
-    }
+  public void setOutputType(AqlOutputType outputType) {
+    this.outputType = outputType;
+  }
 
-    public RowMapper<?> getRowMapper() {
-        return rowMapper;
-    }
+  public RowMapper<?> getRowMapper() {
+    return rowMapper;
+  }
 
-    public void setRowMapper(RowMapper<?> rowMapper) {
-        this.rowMapper = rowMapper;
-    }
+  public void setRowMapper(RowMapper<?> rowMapper) {
+    this.rowMapper = rowMapper;
+  }
 
-    public EhrConfiguration getConfiguration() {
-        return configuration;
-    }
+  public EhrConfiguration getConfiguration() {
+    return configuration;
+  }
 
-    public void setConfiguration(EhrConfiguration configuration) {
-        this.configuration = configuration;
-    }
+  public void setConfiguration(EhrConfiguration configuration) {
+    this.configuration = configuration;
+  }
 
-    public OpenEhrClient getOpenEhrClient() {
-        return getConfiguration().getOpenEhrClient();
-    }
+  public OpenEhrClient getOpenEhrClient() {
+    return getConfiguration().getOpenEhrClient();
+  }
 
-    public void setOpenEhrClient(OpenEhrClient openEhrClient) {
-        getConfiguration().setOpenEhrClient(openEhrClient);
-    }
+  public void setOpenEhrClient(OpenEhrClient openEhrClient) {
+    getConfiguration().setOpenEhrClient(openEhrClient);
+  }
 }

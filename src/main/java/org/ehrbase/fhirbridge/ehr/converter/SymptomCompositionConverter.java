@@ -1,6 +1,9 @@
 package org.ehrbase.fhirbridge.ehr.converter;
 
 import com.nedap.archie.rm.generic.PartySelf;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.ehrbase.fhirbridge.camel.component.ehr.composition.CompositionConversionException;
 import org.ehrbase.fhirbridge.camel.component.ehr.composition.CompositionConverter;
 import org.ehrbase.fhirbridge.ehr.opt.shareddefinition.CategoryDefiningcode;
@@ -23,219 +26,225 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+public class SymptomCompositionConverter
+    implements CompositionConverter<SymptomComposition, Condition> {
 
+  private static final Map<String, ProblemDiagnoseDefiningcode> krankheitszeichenMap =
+      new HashMap<>();
 
-public class SymptomCompositionConverter implements CompositionConverter<SymptomComposition, Condition> {
+  private static final Map<String, SchweregradDefiningcode> schweregradMap = new HashMap<>();
 
-    private static final Map<String, ProblemDiagnoseDefiningcode> krankheitszeichenMap = new HashMap<>();
-
-    private static final Map<String, SchweregradDefiningcode> schweregradMap = new HashMap<>();
-
-
-    static {
-        for (ProblemDiagnoseDefiningcode krankheitszeichen : ProblemDiagnoseDefiningcode.values()) {
-            krankheitszeichenMap.put(krankheitszeichen.getCode(), krankheitszeichen);
-        }
-
-        for (SchweregradDefiningcode schweregrad : SchweregradDefiningcode.values()) {
-            schweregradMap.put(schweregrad.getCode(), schweregrad);
-        }
+  static {
+    for (ProblemDiagnoseDefiningcode krankheitszeichen : ProblemDiagnoseDefiningcode.values()) {
+      krankheitszeichenMap.put(krankheitszeichen.getCode(), krankheitszeichen);
     }
 
-    @Override
-    public Condition fromComposition(SymptomComposition composition) throws CompositionConversionException {
-        // TODO: Implement
-        return null;
+    for (SchweregradDefiningcode schweregrad : SchweregradDefiningcode.values()) {
+      schweregradMap.put(schweregrad.getCode(), schweregrad);
+    }
+  }
+
+  @Override
+  public Condition fromComposition(SymptomComposition composition)
+      throws CompositionConversionException {
+    // TODO: Implement
+    return null;
+  }
+
+  @Override
+  public SymptomComposition toComposition(Condition condition)
+      throws CompositionConversionException {
+    if (condition == null) {
+      return null;
     }
 
-    @Override
-    public SymptomComposition toComposition(Condition condition) throws CompositionConversionException {
-        if (condition == null) {
-            return null;
-        }
+    SymptomComposition result = new SymptomComposition();
 
-        SymptomComposition result = new SymptomComposition();
-
-        if (condition.getVerificationStatus().isEmpty()) {
-            mapUnknown(condition, result);
-        } else if (condition.getVerificationStatus().getCoding().get(0).getCode().equals("confirmed")) {
-            mapPresent(condition, result);
-        } else {
-            mapAbsent(condition, result);
-        }
-
-        result.setStartTimeValue(condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
-
-
-        // ======================================================================================
-        // Required fields by API
-
-        result.setStatusDefiningcode(StatusDefiningcode.FINAL);
-        result.setKategorieDefiningcode(KategorieDefiningcode.N753251);
-
-        result.setLanguage(Language.DE);
-        result.setLocation("test");
-        result.setSettingDefiningcode(SettingDefiningcode.SECONDARY_MEDICAL_CARE);
-        result.setTerritory(Territory.DE);
-        result.setCategoryDefiningcode(CategoryDefiningcode.EVENT);
-        result.setComposer(new PartySelf());
-
-
-        return result;
+    if (condition.getVerificationStatus().isEmpty()) {
+      mapUnknown(condition, result);
+    } else if (condition.getVerificationStatus().getCoding().get(0).getCode().equals("confirmed")) {
+      mapPresent(condition, result);
+    } else {
+      mapAbsent(condition, result);
     }
 
-    private void mapPresent(Condition condition, SymptomComposition composition) {
-        VorliegendesSymptomObservation vorliegendesSymptom = new VorliegendesSymptomObservation();
+    result.setStartTimeValue(
+        condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
 
-        try {
+    // ======================================================================================
+    // Required fields by API
 
-            Coding coding = condition.getCode().getCoding().get(0);
+    result.setStatusDefiningcode(StatusDefiningcode.FINAL);
+    result.setKategorieDefiningcode(KategorieDefiningcode.N753251);
 
-            ProblemDiagnoseDefiningcode krankheitszeichen = null;
+    result.setLanguage(Language.DE);
+    result.setLocation("test");
+    result.setSettingDefiningcode(SettingDefiningcode.SECONDARY_MEDICAL_CARE);
+    result.setTerritory(Territory.DE);
+    result.setCategoryDefiningcode(CategoryDefiningcode.EVENT);
+    result.setComposer(new PartySelf());
 
-            // Neue Systeme werden eingepflegt sobald sie in KrankheitsanzeichenDefiningcode definiert sind.
-            if (coding.getSystem().equals("http://snomed.info/sct")) {
-                krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
-            }
+    return result;
+  }
 
-            if (krankheitszeichen == null) {
-                throw new CompositionConversionException("Unbekanntes Krankheitszeichen.");
-            }
+  private void mapPresent(Condition condition, SymptomComposition composition) {
+    VorliegendesSymptomObservation vorliegendesSymptom = new VorliegendesSymptomObservation();
 
-            vorliegendesSymptom.setNameDesSymptomsKrankheitsanzeichensDefiningcode(krankheitszeichen);
+    try {
 
+      Coding coding = condition.getCode().getCoding().get(0);
 
-            if (condition.getOnset() != null && !condition.getOnset().isEmpty()) {
-                vorliegendesSymptom.setBeginnDerEpisodeValue(
-                        condition.getOnsetDateTimeType().getValueAsCalendar().toZonedDateTime());
-            }
+      ProblemDiagnoseDefiningcode krankheitszeichen = null;
 
-            vorliegendesSymptom.setTimeValue(condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
+      // Neue Systeme werden eingepflegt sobald sie in KrankheitsanzeichenDefiningcode definiert
+      // sind.
+      if (coding.getSystem().equals("http://snomed.info/sct")) {
+        krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
+      }
 
-            if (condition.getAbatement() != null && !condition.getAbatement().isEmpty()) {
-                vorliegendesSymptom.setDatumUhrzeitDesRuckgangsValue(
-                        condition.getAbatementDateTimeType().getValueAsCalendar().toZonedDateTime());
-            }
+      if (krankheitszeichen == null) {
+        throw new CompositionConversionException("Unbekanntes Krankheitszeichen.");
+      }
 
+      vorliegendesSymptom.setNameDesSymptomsKrankheitsanzeichensDefiningcode(krankheitszeichen);
 
-            if (!condition.getBodySite().isEmpty()) {
-                for (CodeableConcept bodySite : condition.getBodySite()) {
+      if (condition.getOnset() != null && !condition.getOnset().isEmpty()) {
+        vorliegendesSymptom.setBeginnDerEpisodeValue(
+            condition.getOnsetDateTimeType().getValueAsCalendar().toZonedDateTime());
+      }
 
-                    VorliegendesSymptomAnatomischeLokalisationElement lokalisation =
-                            new VorliegendesSymptomAnatomischeLokalisationElement();
-                    lokalisation.setValue(bodySite.getCoding().get(0).getCode());
+      vorliegendesSymptom.setTimeValue(
+          condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
 
-                    vorliegendesSymptom.getAnatomischeLokalisation().add(lokalisation);
-                }
-            }
+      if (condition.getAbatement() != null && !condition.getAbatement().isEmpty()) {
+        vorliegendesSymptom.setDatumUhrzeitDesRuckgangsValue(
+            condition.getAbatementDateTimeType().getValueAsCalendar().toZonedDateTime());
+      }
 
-            if (condition.getSeverity() != null && !condition.getSeverity().isEmpty()) {
+      if (!condition.getBodySite().isEmpty()) {
+        for (CodeableConcept bodySite : condition.getBodySite()) {
 
-                SchweregradDefiningcode schweregrad = null;
+          VorliegendesSymptomAnatomischeLokalisationElement lokalisation =
+              new VorliegendesSymptomAnatomischeLokalisationElement();
+          lokalisation.setValue(bodySite.getCoding().get(0).getCode());
 
-                if (condition.getSeverity().getCoding().get(0).getSystem().equals("http://snomed.info/sct")) {
-                    schweregrad = schweregradMap.get(condition.getSeverity().getCoding().get(0).getCode());
-                }
+          vorliegendesSymptom.getAnatomischeLokalisation().add(lokalisation);
+        }
+      }
 
-                if (schweregrad == null) {
-                    throw new CompositionConversionException("Schweregrad has unknown system");
-                }
+      if (condition.getSeverity() != null && !condition.getSeverity().isEmpty()) {
 
-                vorliegendesSymptom.setSchweregradDefiningcode(schweregrad);
-            }
+        SchweregradDefiningcode schweregrad = null;
 
-
-            vorliegendesSymptom.setOriginValue(condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
-
-        } catch (Exception e) {
-            throw new CompositionConversionException("Some parts of the condition did not contain the required elements. "
-                    + e.getMessage(), e);
+        if (condition
+            .getSeverity()
+            .getCoding()
+            .get(0)
+            .getSystem()
+            .equals("http://snomed.info/sct")) {
+          schweregrad = schweregradMap.get(condition.getSeverity().getCoding().get(0).getCode());
         }
 
-        vorliegendesSymptom.setLanguage(Language.DE);
-        vorliegendesSymptom.setSubject(new PartySelf());
+        if (schweregrad == null) {
+          throw new CompositionConversionException("Schweregrad has unknown system");
+        }
 
-        composition.setVorliegendesSymptom(vorliegendesSymptom);
+        vorliegendesSymptom.setSchweregradDefiningcode(schweregrad);
+      }
 
+      vorliegendesSymptom.setOriginValue(
+          condition.getRecordedDateElement().getValueAsCalendar().toZonedDateTime());
+
+    } catch (Exception e) {
+      throw new CompositionConversionException(
+          "Some parts of the condition did not contain the required elements. " + e.getMessage(),
+          e);
     }
 
-    private void mapAbsent(Condition condition, SymptomComposition composition) {
+    vorliegendesSymptom.setLanguage(Language.DE);
+    vorliegendesSymptom.setSubject(new PartySelf());
 
-        AusgeschlossenesSymptomEvaluation ausgeschlossenesSymptom = new AusgeschlossenesSymptomEvaluation();
+    composition.setVorliegendesSymptom(vorliegendesSymptom);
+  }
 
-        try {
-            Coding coding = condition.getCode().getCoding().get(0);
+  private void mapAbsent(Condition condition, SymptomComposition composition) {
 
-            ProblemDiagnoseDefiningcode krankheitszeichen = null;
+    AusgeschlossenesSymptomEvaluation ausgeschlossenesSymptom =
+        new AusgeschlossenesSymptomEvaluation();
 
-            if (coding.getSystem().equals("http://snomed.info/sct")) {
-                krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
-            }
+    try {
+      Coding coding = condition.getCode().getCoding().get(0);
 
-            if (krankheitszeichen == null) {
-                throw new CompositionConversionException("Unbekanntes Diagnose/Problem.");
-            }
+      ProblemDiagnoseDefiningcode krankheitszeichen = null;
 
-            ausgeschlossenesSymptom.setProblemDiagnoseDefiningcode(krankheitszeichen);
-        } catch (Exception e) {
-            throw new CompositionConversionException("Some parts of the condition did not contain the required elements. "
-                    + e.getMessage(), e);
-        }
+      if (coding.getSystem().equals("http://snomed.info/sct")) {
+        krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
+      }
 
+      if (krankheitszeichen == null) {
+        throw new CompositionConversionException("Unbekanntes Diagnose/Problem.");
+      }
 
-        // Only one value possible.
-        ausgeschlossenesSymptom.setAussageUberDenAusschlussDefiningcode(AussageUberDenAusschlussDefiningcode.N410594000);
-
-
-        ausgeschlossenesSymptom.setSubject(new PartySelf());
-        ausgeschlossenesSymptom.setLanguage(Language.DE);
-
-        composition.setAusgeschlossenesSymptom(ausgeschlossenesSymptom);
-
+      ausgeschlossenesSymptom.setProblemDiagnoseDefiningcode(krankheitszeichen);
+    } catch (Exception e) {
+      throw new CompositionConversionException(
+          "Some parts of the condition did not contain the required elements. " + e.getMessage(),
+          e);
     }
 
-    private void mapUnknown(Condition condition, SymptomComposition composition) {
+    // Only one value possible.
+    ausgeschlossenesSymptom.setAussageUberDenAusschlussDefiningcode(
+        AussageUberDenAusschlussDefiningcode.N410594000);
 
-        UnbekanntesSymptomEvaluation unbekanntesSymptom = new UnbekanntesSymptomEvaluation();
+    ausgeschlossenesSymptom.setSubject(new PartySelf());
+    ausgeschlossenesSymptom.setLanguage(Language.DE);
 
-        try {
-            Coding coding = condition.getCode().getCoding().get(0);
+    composition.setAusgeschlossenesSymptom(ausgeschlossenesSymptom);
+  }
 
-            ProblemDiagnoseDefiningcode krankheitszeichen = null;
+  private void mapUnknown(Condition condition, SymptomComposition composition) {
 
-            // Neue Systeme werden eingepflegt sobald sie in KrankheitsanzeichenDefiningcode definiert sind.
-            if (coding.getSystem().equals("http://snomed.info/sct")) {
-                krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
-            }
+    UnbekanntesSymptomEvaluation unbekanntesSymptom = new UnbekanntesSymptomEvaluation();
 
-            if (krankheitszeichen == null) {
-                throw new CompositionConversionException("Unbekanntes <unbekanntes Symptom>");
-            }
+    try {
+      Coding coding = condition.getCode().getCoding().get(0);
 
-            unbekanntesSymptom.setUnbekanntesSymptomDefiningcode(krankheitszeichen);
+      ProblemDiagnoseDefiningcode krankheitszeichen = null;
 
-        } catch (Exception e) {
-            throw new CompositionConversionException("Some parts of the condition did not contain the required elements. "
-                    + e.getMessage(), e);
-        }
+      // Neue Systeme werden eingepflegt sobald sie in KrankheitsanzeichenDefiningcode definiert
+      // sind.
+      if (coding.getSystem().equals("http://snomed.info/sct")) {
+        krankheitszeichen = krankheitszeichenMap.get(coding.getCode());
+      }
 
-        // UnbekanntesSymptomAussage can only have one value.
-        UnbekanntesSymptomAussageUberDieFehlendeInformationElement aussageUberDieFehlendeInformationElement = new UnbekanntesSymptomAussageUberDieFehlendeInformationElement();
-        aussageUberDieFehlendeInformationElement.setDefiningcode(Definingcode.N261665006);
+      if (krankheitszeichen == null) {
+        throw new CompositionConversionException("Unbekanntes <unbekanntes Symptom>");
+      }
 
+      unbekanntesSymptom.setUnbekanntesSymptomDefiningcode(krankheitszeichen);
 
-        if (unbekanntesSymptom.getAussageUberDieFehlendeInformation() == null) {
-            unbekanntesSymptom.setAussageUberDieFehlendeInformation(new ArrayList<>());
-        }
-
-        unbekanntesSymptom.getAussageUberDieFehlendeInformation().add(aussageUberDieFehlendeInformationElement);
-        unbekanntesSymptom.setSubject(new PartySelf());
-        unbekanntesSymptom.setLanguage(Language.DE);
-
-
-        composition.setUnbekanntesSymptom(unbekanntesSymptom);
+    } catch (Exception e) {
+      throw new CompositionConversionException(
+          "Some parts of the condition did not contain the required elements. " + e.getMessage(),
+          e);
     }
+
+    // UnbekanntesSymptomAussage can only have one value.
+    UnbekanntesSymptomAussageUberDieFehlendeInformationElement
+        aussageUberDieFehlendeInformationElement =
+            new UnbekanntesSymptomAussageUberDieFehlendeInformationElement();
+    aussageUberDieFehlendeInformationElement.setDefiningcode(Definingcode.N261665006);
+
+    if (unbekanntesSymptom.getAussageUberDieFehlendeInformation() == null) {
+      unbekanntesSymptom.setAussageUberDieFehlendeInformation(new ArrayList<>());
+    }
+
+    unbekanntesSymptom
+        .getAussageUberDieFehlendeInformation()
+        .add(aussageUberDieFehlendeInformationElement);
+    unbekanntesSymptom.setSubject(new PartySelf());
+    unbekanntesSymptom.setLanguage(Language.DE);
+
+    composition.setUnbekanntesSymptom(unbekanntesSymptom);
+  }
 }

@@ -8,11 +8,11 @@ import org.hl7.fhir.r4.model.Procedure;
 
 public class ProcedureRowMapper implements RowMapper<Procedure> {
 
-    private final ProcedureCompositionConverter converter = new ProcedureCompositionConverter();
+  private final ProcedureCompositionConverter converter = new ProcedureCompositionConverter();
 
-    @Override
-    public Procedure mapRow(Record record, int rowNum) {
-        ProzedurComposition composition = (ProzedurComposition) record.value(0);
-        return converter.fromComposition(composition);
-    }
+  @Override
+  public Procedure mapRow(Record record, int rowNum) {
+    ProzedurComposition composition = (ProzedurComposition) record.value(0);
+    return converter.fromComposition(composition);
+  }
 }

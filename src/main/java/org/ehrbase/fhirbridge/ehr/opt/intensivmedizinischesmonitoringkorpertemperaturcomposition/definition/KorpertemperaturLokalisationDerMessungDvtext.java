@@ -6,15 +6,16 @@ import org.ehrbase.client.annotations.Path;
 
 @Entity
 @OptionFor("DV_TEXT")
-public class KorpertemperaturLokalisationDerMessungDvtext implements KorpertemperaturLokalisationDerMessungChoice {
-    @Path("|value")
-    private String lokalisationDerMessungValue;
+public class KorpertemperaturLokalisationDerMessungDvtext
+    implements KorpertemperaturLokalisationDerMessungChoice {
+  @Path("|value")
+  private String lokalisationDerMessungValue;
 
-    public void setLokalisationDerMessungValue(String lokalisationDerMessungValue) {
-        this.lokalisationDerMessungValue = lokalisationDerMessungValue;
-    }
+  public void setLokalisationDerMessungValue(String lokalisationDerMessungValue) {
+    this.lokalisationDerMessungValue = lokalisationDerMessungValue;
+  }
 
-    public String getLokalisationDerMessungValue() {
-        return this.lokalisationDerMessungValue;
-    }
+  public String getLokalisationDerMessungValue() {
+    return this.lokalisationDerMessungValue;
+  }
 }

@@ -8,11 +8,11 @@ import org.hl7.fhir.r4.model.Condition;
 
 public class DiagnoseRowMapper implements RowMapper<Condition> {
 
-    private final DiagnoseCompositionConverter converter = new DiagnoseCompositionConverter();
+  private final DiagnoseCompositionConverter converter = new DiagnoseCompositionConverter();
 
-    @Override
-    public Condition mapRow(Record record, int rowNum) {
-        DiagnoseComposition composition = (DiagnoseComposition) record.value(0);
-        return converter.fromComposition(composition);
-    }
+  @Override
+  public Condition mapRow(Record record, int rowNum) {
+    DiagnoseComposition composition = (DiagnoseComposition) record.value(0);
+    return converter.fromComposition(composition);
+  }
 }

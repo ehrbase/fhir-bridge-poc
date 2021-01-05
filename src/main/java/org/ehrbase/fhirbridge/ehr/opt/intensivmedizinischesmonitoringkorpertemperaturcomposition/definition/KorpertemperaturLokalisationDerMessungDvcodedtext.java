@@ -6,16 +6,17 @@ import org.ehrbase.client.annotations.Path;
 
 @Entity
 @OptionFor("DV_CODED_TEXT")
-public class KorpertemperaturLokalisationDerMessungDvcodedtext implements KorpertemperaturLokalisationDerMessungChoice {
-    @Path("|defining_code")
-    private LokalisationDerMessungDefiningcode lokalisationDerMessungDefiningcode;
+public class KorpertemperaturLokalisationDerMessungDvcodedtext
+    implements KorpertemperaturLokalisationDerMessungChoice {
+  @Path("|defining_code")
+  private LokalisationDerMessungDefiningcode lokalisationDerMessungDefiningcode;
 
-    public void setLokalisationDerMessungDefiningcode(
-            LokalisationDerMessungDefiningcode lokalisationDerMessungDefiningcode) {
-        this.lokalisationDerMessungDefiningcode = lokalisationDerMessungDefiningcode;
-    }
+  public void setLokalisationDerMessungDefiningcode(
+      LokalisationDerMessungDefiningcode lokalisationDerMessungDefiningcode) {
+    this.lokalisationDerMessungDefiningcode = lokalisationDerMessungDefiningcode;
+  }
 
-    public LokalisationDerMessungDefiningcode getLokalisationDerMessungDefiningcode() {
-        return this.lokalisationDerMessungDefiningcode;
-    }
+  public LokalisationDerMessungDefiningcode getLokalisationDerMessungDefiningcode() {
+    return this.lokalisationDerMessungDefiningcode;
+  }
 }

@@ -5,9 +5,10 @@ import org.openehealth.ipf.commons.ihe.fhir.audit.GenericFhirAuditDataset;
 import org.openehealth.ipf.platform.camel.ihe.fhir.core.custom.CustomFhirComponent;
 
 @SuppressWarnings({"java:S110"})
-public class CreateQuestionnaireResponseComponent extends CustomFhirComponent<GenericFhirAuditDataset> {
+public class CreateQuestionnaireResponseComponent
+    extends CustomFhirComponent<GenericFhirAuditDataset> {
 
-    public CreateQuestionnaireResponseComponent() {
-        super(new CreateQuestionnaireResponseTransaction());
-    }
+  public CreateQuestionnaireResponseComponent() {
+    super(new CreateQuestionnaireResponseTransaction());
+  }
 }

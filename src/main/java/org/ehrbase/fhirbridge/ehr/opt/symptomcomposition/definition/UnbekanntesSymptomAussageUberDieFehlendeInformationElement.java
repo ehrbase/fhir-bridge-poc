@@ -9,10 +9,10 @@ public class UnbekanntesSymptomAussageUberDieFehlendeInformationElement {
   private Definingcode definingcode;
 
   public void setDefiningcode(Definingcode definingcode) {
-     this.definingcode = definingcode;
+    this.definingcode = definingcode;
   }
 
   public Definingcode getDefiningcode() {
-     return this.definingcode ;
+    return this.definingcode;
   }
 }

@@ -7,15 +7,16 @@ import org.openehealth.ipf.commons.ihe.fhir.audit.FhirQueryAuditDataset;
 
 public class FindPatientTransaction extends FhirTransactionConfiguration<FhirQueryAuditDataset> {
 
-    public FindPatientTransaction() {
-        super("fhir-find-patient",
-                "Find Patient",
-                true,
-                new FindPatientAuditStrategy(false),
-                new FindPatientAuditStrategy(true),
-                FhirVersionEnum.R4,
-                new FindPatientProvider(),
-                null,
-                FhirTransactionValidator.NO_VALIDATION);
-    }
+  public FindPatientTransaction() {
+    super(
+        "fhir-find-patient",
+        "Find Patient",
+        true,
+        new FindPatientAuditStrategy(false),
+        new FindPatientAuditStrategy(true),
+        FhirVersionEnum.R4,
+        new FindPatientProvider(),
+        null,
+        FhirTransactionValidator.NO_VALIDATION);
+  }
 }

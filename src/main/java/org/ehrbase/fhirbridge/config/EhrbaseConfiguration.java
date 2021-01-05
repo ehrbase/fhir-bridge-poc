@@ -1,5 +1,7 @@
 package org.ehrbase.fhirbridge.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -16,49 +18,49 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-/**
- * {@link Configuration Configuration} for EHRbase SDK.
- */
+/** {@link Configuration Configuration} for EHRbase SDK. */
 @Configuration
 @EnableConfigurationProperties(EhrbaseProperties.class)
 @Import(EhrbaseTemplateInitializer.class)
 public class EhrbaseConfiguration {
 
-    private final EhrbaseProperties properties;
+  private final EhrbaseProperties properties;
 
-    public EhrbaseConfiguration(EhrbaseProperties properties) {
-        this.properties = properties;
+  public EhrbaseConfiguration(EhrbaseProperties properties) {
+    this.properties = properties;
+  }
+
+  @Bean
+  public OpenEhrClientConfig restClientConfig() throws URISyntaxException {
+    return new OpenEhrClientConfig(new URI(properties.getBaseUrl()));
+  }
+
+  @Bean
+  public TemplateProvider templateProvider() {
+    return new ResourceTemplateProvider(properties.getTemplate().getPrefix());
+  }
+
+  @Bean
+  public DefaultRestClient openEhrClient(
+      OpenEhrClientConfig restClientConfig,
+      TemplateProvider templateProvider,
+      HttpClient httpClient) {
+    return new DefaultRestClient(restClientConfig, templateProvider, httpClient);
+  }
+
+  @Bean
+  public HttpClient httpClient() {
+    HttpClientBuilder builder = HttpClientBuilder.create();
+
+    EhrbaseProperties.Security security = properties.getSecurity();
+    if (security.getType() == AuthorizationType.BASIC_AUTH) {
+      CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+      credentialsProvider.setCredentials(
+          AuthScope.ANY,
+          new UsernamePasswordCredentials(security.getUsername(), security.getPassword()));
+      builder.setDefaultCredentialsProvider(credentialsProvider);
     }
 
-    @Bean
-    public OpenEhrClientConfig restClientConfig() throws URISyntaxException {
-        return new OpenEhrClientConfig(new URI(properties.getBaseUrl()));
-    }
-
-    @Bean
-    public TemplateProvider templateProvider() {
-        return new ResourceTemplateProvider(properties.getTemplate().getPrefix());
-    }
-
-    @Bean
-    public DefaultRestClient openEhrClient(OpenEhrClientConfig restClientConfig, TemplateProvider templateProvider, HttpClient httpClient) {
-        return new DefaultRestClient(restClientConfig, templateProvider, httpClient);
-    }
-
-    @Bean
-    public HttpClient httpClient() {
-        HttpClientBuilder builder = HttpClientBuilder.create();
-
-        EhrbaseProperties.Security security = properties.getSecurity();
-        if (security.getType() == AuthorizationType.BASIC_AUTH) {
-            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(security.getUsername(), security.getPassword()));
-            builder.setDefaultCredentialsProvider(credentialsProvider);
-        }
-
-        return builder.build();
-    }
+    return builder.build();
+  }
 }

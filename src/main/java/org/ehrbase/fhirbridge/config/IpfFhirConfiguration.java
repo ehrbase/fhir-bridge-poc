@@ -17,31 +17,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class IpfFhirConfiguration {
 
-    @Bean
-    public IpfFhirServlet fhirServlet(IpfFhirConfigurationProperties properties,
-                                      FhirContext fhirContext,
-                                      IServerConformanceProvider<CapabilityStatement> serverConformanceProvider,
-                                      ObjectProvider<IPagingProvider> pagingProvider,
-                                      IServerAddressStrategy serverAddressStrategy,
-                                      INarrativeGenerator narrativeGenerator,
-                                      RequestValidatingInterceptor requestValidatingInterceptor) {
-        IpfFhirServlet fhirServlet = new IpfBootFhirServlet(fhirContext, pagingProvider);
-        IpfFhirConfigurationProperties.Servlet servletProperties = properties.getServlet();
-        fhirServlet.setLogging(servletProperties.isLogging());
-        fhirServlet.setPrettyPrint(servletProperties.isPrettyPrint());
-        fhirServlet.setResponseHighlighting(servletProperties.isResponseHighlighting());
-        fhirServlet.setStrictErrorHandler(servletProperties.isStrict());
-        fhirServlet.setServerConformanceProvider(serverConformanceProvider);
-        fhirServlet.setServerAddressStrategy(serverAddressStrategy);
-        fhirServlet.setPagingProviderSize(servletProperties.getPagingRequests());
-        fhirServlet.setMaximumPageSize(servletProperties.getMaxPageSize());
-        fhirServlet.setDefaultPageSize(servletProperties.getDefaultPageSize());
-        fhirServlet.registerInterceptor(requestValidatingInterceptor);
+  @Bean
+  public IpfFhirServlet fhirServlet(
+      IpfFhirConfigurationProperties properties,
+      FhirContext fhirContext,
+      IServerConformanceProvider<CapabilityStatement> serverConformanceProvider,
+      ObjectProvider<IPagingProvider> pagingProvider,
+      IServerAddressStrategy serverAddressStrategy,
+      INarrativeGenerator narrativeGenerator,
+      RequestValidatingInterceptor requestValidatingInterceptor) {
+    IpfFhirServlet fhirServlet = new IpfBootFhirServlet(fhirContext, pagingProvider);
+    IpfFhirConfigurationProperties.Servlet servletProperties = properties.getServlet();
+    fhirServlet.setLogging(servletProperties.isLogging());
+    fhirServlet.setPrettyPrint(servletProperties.isPrettyPrint());
+    fhirServlet.setResponseHighlighting(servletProperties.isResponseHighlighting());
+    fhirServlet.setStrictErrorHandler(servletProperties.isStrict());
+    fhirServlet.setServerConformanceProvider(serverConformanceProvider);
+    fhirServlet.setServerAddressStrategy(serverAddressStrategy);
+    fhirServlet.setPagingProviderSize(servletProperties.getPagingRequests());
+    fhirServlet.setMaximumPageSize(servletProperties.getMaxPageSize());
+    fhirServlet.setDefaultPageSize(servletProperties.getDefaultPageSize());
+    fhirServlet.registerInterceptor(requestValidatingInterceptor);
 
-        if (narrativeGenerator != null) {
-            fhirServlet.setNarrativeGenerator(narrativeGenerator);
-        }
-
-        return fhirServlet;
+    if (narrativeGenerator != null) {
+      fhirServlet.setNarrativeGenerator(narrativeGenerator);
     }
+
+    return fhirServlet;
+  }
 }

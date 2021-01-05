@@ -7,15 +7,16 @@ import org.openehealth.ipf.commons.ihe.fhir.audit.FhirQueryAuditDataset;
 
 public class FindConditionTransaction extends FhirTransactionConfiguration<FhirQueryAuditDataset> {
 
-    public FindConditionTransaction() {
-        super("fhir-find-condition",
-                "Search Condition",
-                true,
-                new FindConditionAuditStrategy(false),
-                new FindConditionAuditStrategy(true),
-                FhirVersionEnum.R4,
-                new FindConditionProvider(),
-                null,
-                FhirTransactionValidator.NO_VALIDATION);
-    }
+  public FindConditionTransaction() {
+    super(
+        "fhir-find-condition",
+        "Search Condition",
+        true,
+        new FindConditionAuditStrategy(false),
+        new FindConditionAuditStrategy(true),
+        FhirVersionEnum.R4,
+        new FindConditionProvider(),
+        null,
+        FhirTransactionValidator.NO_VALIDATION);
+  }
 }

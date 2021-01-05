@@ -252,6 +252,7 @@ commands:
                 name: BUILD FHIR-BRIDGE
                 command: |
                     ls -la
+                    mvn git-code-format:validate-code-format -Dgcf.globPattern=**/*
                     mvn clean verify -Dmaven.javadoc.skip=true -DskipITs=false
 
 

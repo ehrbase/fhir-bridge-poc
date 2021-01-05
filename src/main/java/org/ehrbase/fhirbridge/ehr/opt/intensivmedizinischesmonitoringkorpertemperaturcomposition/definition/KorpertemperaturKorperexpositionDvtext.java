@@ -6,15 +6,16 @@ import org.ehrbase.client.annotations.Path;
 
 @Entity
 @OptionFor("DV_TEXT")
-public class KorpertemperaturKorperexpositionDvtext implements KorpertemperaturKorperexpositionChoice {
-    @Path("|value")
-    private String korperexpositionValue;
+public class KorpertemperaturKorperexpositionDvtext
+    implements KorpertemperaturKorperexpositionChoice {
+  @Path("|value")
+  private String korperexpositionValue;
 
-    public void setKorperexpositionValue(String korperexpositionValue) {
-        this.korperexpositionValue = korperexpositionValue;
-    }
+  public void setKorperexpositionValue(String korperexpositionValue) {
+    this.korperexpositionValue = korperexpositionValue;
+  }
 
-    public String getKorperexpositionValue() {
-        return this.korperexpositionValue;
-    }
+  public String getKorperexpositionValue() {
+    return this.korperexpositionValue;
+  }
 }
