@@ -1,0 +1,11 @@
+theme: jekyll-theme-cayman
+
+title: [FHIR-bridge test documentation]
+# description: [Documentation of tests implemented with Robot Framework]
+
+show_downloads: ["true"]
+
+github:
+  log_url: ./log.html
+  report_url: ./report.html
+  testdocs_url: ./fhir-bridge-robot-testdocu.html

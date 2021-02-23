@@ -2,7 +2,7 @@ version: 2.1
 
 # OVERVIEW - What this CI pipeline does:
 #
-# 1. So far this pipeline consists of one workflow only, which
+# 1. This pipeline consists of one workflow, which
 #    - clones ehrbase repo
 #    - builds ehrbase server from develop branch
 #    - starts ehrbase server (postgresql db is included in used docker executor,
@@ -13,6 +13,7 @@ version: 2.1
 #    - performes sonarcloud.io code analysis
 #    - creates a tag and pushes that to Git
 #    - Builds the Docker image and pushes that do DockerHub with appropriate tag
+#    - Deploys Robot Test Documentation to Github-Pages
 
 
 workflows:
@@ -20,53 +21,44 @@ workflows:
   # WORKFLOW 1/1 Build, Test & Analyze FHIR-bridge code
   build_and_test_fhirbridge:
     jobs:
-        - quick-test-fhirbridge:
+        - build-and-quicktest-fhirbridge:
             context: org-global
             filters:
-                branches:
-                    ignore:
-                    - gh-pages
+              branches:
+                ignore: gh-pages
                     # - master
                     # - develop
                     # - release
-        - full-test-fhirbridge:
+        - build-and-test-fhirbridge:
             context: org-global
             filters:
-                branches:
-                    ignore:
-                    - gh-pages
+              branches:
+                ignore: gh-pages
         - tag-version:
             context: org-global
             requires:
-                - full-test-fhirbridge
+                - build-and-test-fhirbridge
             filters:
                 branches:
                     only:
                         - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+)$/
-        - deploy-to-dockerhub:
+        # - build-and-deploy:
+        #     context: org-global
+        #     requires:
+        #         - build-and-test-fhirbridge
+        #     filters:
+        #         branches:
+        #             only:
+        #                 - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
+
+        - deploy-testdocs-githup-pages:
             context: org-global
             requires:
-                - full-test-fhirbridge
+                - build-and-test-fhirbridge
             filters:
                 branches:
                     only:
-                        - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
-        
-        - deploy-to-github-pages:
-            requires:
-                - full-test-fhirbridge
-            filters:
-                branches:
-                    only:
-                        - /^(release\/v\d+\.\d+\.\d+|hotfix\/v\d+\.\d+\.\d+|master|develop)$/
-
-#   deploy_github_pages:
-#     jobs:
-#         - deploy-testdocs:
-#             filters:
-#                 branches:
-#                     only:
-#                         - gh-pages
+                        - develop
 
 
 
@@ -85,7 +77,7 @@ jobs:
     #    "Y8888P"     `"Y8888Y"'    88888888P"    "Y88888P"
 
 
-    quick-test-fhirbridge:
+    build-and-quicktest-fhirbridge:
         description: Build and test FHIR-bridge
         executor: docker-py3-java11-postgres
         steps:
@@ -104,7 +96,7 @@ jobs:
             - save-fhirbridge-test-results
 
 
-    full-test-fhirbridge:
+    build-and-test-fhirbridge:
         description: |
             Build and test FHIR-bridge, analyze code, collect code coverage metrics,
             upload results to sonarcloud.io
@@ -127,6 +119,7 @@ jobs:
             - collect-fhirbridge-integrationtest-results
             - save-fhirbridge-test-results
             - save-jacoco-coverage-report
+            - save-fhirbridge-workspace
             - sonarcloud/scan:
                 cache_version: 1
 
@@ -138,23 +131,25 @@ jobs:
             - checkout
             - configure-git-for-ci-bot
             - run:
-                # This automatically sets the application version when there is a commit to release or hotfix branch.
-                # The version number is parsed from the branch name, for example release/v1.0.5 will create a tag v1.0.5
-                # and set the version number in pom.xml to same version.
-                command: |
-                    VERSION_NUMBER="$(echo $CIRCLE_BRANCH | awk -F'/v' '{print $2;}')"
-                    echo "Updating the application version from the branch to ${VERSION_NUMBER}"
-                    ./mvnw versions:set -DnewVersion=$VERSION_NUMBER versions:commit
+                  name: Update Snapshot Version
+                  description: |
+                      This automatically sets the application version when there is a commit to release or hotfix branch.
+                      The version number is parsed from the branch name, for example release/v1.0.5 will create a tag v1.0.5
+                      and set the version number in pom.xml to same version.
+                  command: |
+                      VERSION_NUMBER="$(echo $CIRCLE_BRANCH | awk -F'/v' '{print $2;}')"
+                      echo "Updating the application version from the branch to ${VERSION_NUMBER}"
+                      ./mvnw versions:set -DnewVersion=$VERSION_NUMBER versions:commit
 
-                    git commit -am "updated version to ${VERSION_NUMBER} [skip ci]"
-                    git tag -a v$VERSION_NUMBER -m "fhir-bridge release version v${VERSION_NUMBER}"
-                    git push --set-upstream origin $CIRCLE_BRANCH
-                    git push origin --tags
+                      git commit -am "updated version to ${VERSION_NUMBER} [skip ci]"
+                      git tag -a v$VERSION_NUMBER -m "fhir-bridge release version v${VERSION_NUMBER}"
+                      git push --set-upstream origin $CIRCLE_BRANCH
+                      git push origin --tags
 
-                    exit 0
+                      exit 0
 
 
-    deploy-to-dockerhub:
+    build-and-deploy:
         docker:
             - image: cimg/openjdk:11.0.8
               auth:
@@ -167,7 +162,7 @@ jobs:
             - setup_remote_docker:
                   version: 19.03.13
             - run:
-                  name: Build and tag image and push to Docker Hub
+                  name: Build and tag image and push
                   command: |
                       if [ $CIRCLE_BRANCH = "master" ]; then
                           TAG=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
@@ -183,16 +178,30 @@ jobs:
                       mvn spring-boot:build-image -Dspring-boot.build-image.imageName=ehrbase/fhir-bridge:$TAG -Dmaven.test.skip
                       docker tag ehrbase/fhir-bridge ehrbase/fhir-bridge:$TAG
                       docker push ehrbase/fhir-bridge:$TAG
+            
 
-
-    deploy-to-github-pages:
-        docker:
-            - image: cimg/openjdk:11.0.8
-              auth:
-                  username: $DOCKER_USER
-                  password: $DOCKER_HUB_PASSWORD
+    deploy-testdocs-githup-pages:
+        description: |
+            Deploy Robot Test Documentation to Github Pages
+        executor: docker-py3-java11-postgres
         steps:
             - checkout
+            - configure-git-for-ci-bot
+            - restore-fhirbridge-workspace
+            - run:
+                name: OVERWRITE OLD ROBOT FILES AND PUSH UPDATE TO GH-PAGES BRANCH
+                command: |
+                    # ls -la
+                    git checkout gh-pages
+                    # git status
+                    cp new_fhir-bridge-robot-testdocu.html fhir-bridge-robot-testdocu.html
+                    cp new_log.html log.html
+                    cp new_report.html report.html
+                    # ls -la
+                    # git status
+                    git commit -am "Updates Robot Test Documentation Github Page --> https://ehrbase.github.io/fhir-bridge/"
+                    git push --force --set-upstream origin gh-pages
+
 
 
 
@@ -254,7 +263,7 @@ commands:
                 name: WAIT FOR EHRBASE SERVER TO BE READY
                 command: |
                     ls -la
-                    timeout=30
+                    timeout=180
                     while [ ! -f ehrbase/log ];
                         do
                             echo "Waiting for file ehrbase/log ..."
@@ -269,7 +278,8 @@ commands:
                         do
                             echo "waiting for EHRbase to be ready ...";
                             if [ "$timeout" == 0 ]; then
-                                echo "WARNING: Did not see a startup message even after waiting 30s"
+                                echo "WARNING: Did not see a startup message even after waiting 180s"
+                                cat ehrbase/log
                                 exit 1
                             fi
                             sleep 1;
@@ -281,23 +291,11 @@ commands:
                 name: BUILD FHIR-BRIDGE
                 command: |
                     ls -la
-                    mvn clean verify -Dmaven.javadoc.skip=true -DskipITs=false
+                    mvn clean verify -Dmaven.javadoc.skip=true -DskipITs=true
 
 
     start-fhirbridge-application:
         steps:
-            # - run:
-            #     name: COPY APPLICATION-CI.yml to ./application.yml
-            #     description: |
-            #         This make Spring Boot load this config when starting fhirbridge .jar
-            #         And is required to start fhirbrige in CI pipeline.
-            #     command: |
-            #         cp src/test/resources/application-ci.yml ./application.yml
-            # - run:
-            #     name: WORKAROUND FOR ISSUE github.com/ehrbase/fhir-bridge/issues/60
-            #     command: |
-            #         rm -rf target/lib/
-            #         ls -la target/
             - run:
                 name: START FHIRBRIDGE APPLICATION
                 background: true
@@ -313,7 +311,7 @@ commands:
                 name: WAIT FOR FHIRBRIDE TO BE READY
                 command: |
                     ls -la
-                    timeout=60
+                    timeout=180
                     while [ ! -f fhirbride_log ];
                         do
                             echo "Waiting for file fhirbride_log ..."
@@ -328,7 +326,8 @@ commands:
                         do
                             echo "waiting for FHIR-Bridge to be ready ...";
                             if [ "$timeout" == 0 ]; then
-                                echo "WARNING: Did not see a startup message even after waiting 60s"
+                                echo "WARNING: Did not see a startup message even after waiting 180s"
+                                cat fhirbride_log
                                 exit 1
                             fi
                             sleep 1;
@@ -350,42 +349,36 @@ commands:
     run-robot-integration-tests:
         steps:
             - install-robot-dependencies
-            - run: |
-                cd tests/
-                mkdir results && mkdir results/0
-                echo DUMMY RUN ROBOT TEST > results/0/dummy-report.html
-                
-            # - run:
-            #     name: RUN ROBOT TESTS
-            #     command: |
-            #         cd tests/
-            #         robot -d results/0 -L TRACE \
-            #                 --skip TODO --skip future \
-            #                 --skiponfailure not-ready robot/
-            
-            # - run:
-            #     name: GENERATE XUNIT REPORT FOR CIRCLECI UI INTEGRATION
-            #     when: always
-            #     command: |
-            #         cd tests/
-            #         rebot --outputdir results/1/robot-tests \
-            #             -e obsolete -e libtest \
-            #             --removekeywords for \
-            #             --removekeywords wuks \
-            #             --loglevel TRACE \
-            #             --output NONE \
-            #             --log NONE \
-            #             --report NONE \
-            #             --xunit junit-output.xml --xunitskipnoncritical \
-            #             results/0/output.xml
             - run:
-                name: GENERATE TESTDOCUMENTATION HTML FOR CIRCLECI ARTIFACTS
+                name: RUN ROBOT TESTS
                 command: |
-                        cd tests/
-                        python3 -m robot.testdoc \
-                          --title "FHIR Bridge Integrationtest (Documentation)" \
-                          --name "FHIR Bridge" \
-                          robot ./fhirbridge-robot-testdocumentation.html
+                    cd tests/
+                    robot -d results/0 -L TRACE \
+                            -i xxx \
+                            --skip TODO --skip future \
+                            --skiponfailure not-ready robot/
+            - run:
+                name: GENERATE XUNIT REPORT FOR CIRCLECI UI INTEGRATION
+                when: always
+                command: |
+                    cd tests/
+                    rebot --outputdir results/1/robot-tests \
+                        -i xxx \
+                        -e obsolete -e libtest \
+                        --removekeywords for \
+                        --removekeywords wuks \
+                        --loglevel TRACE \
+                        --output NONE \
+                        --log NONE \
+                        --report NONE \
+                        --xunit junit-output.xml --xunitskipnoncritical \
+                        results/0/output.xml
+            - run:
+                name: GENERATE ROBOT TEST DOCUMENTATION
+                command: |
+                    python3 -m robot.testdoc tests/robot new_fhir-bridge-robot-testdocu.html
+                    cp tests/results/0/log.html ./new_log.html
+                    cp tests/results/0/report.html ./new_report.html
             - run:
                 name: COPY ROBOT OUTPUT FILES
                 when: always
