@@ -313,8 +313,9 @@ jobs:
         executor: machine-ubuntu-2004
         steps:
             - checkout
-            - install-maven
+            # - install-maven                     # not needed on machine executor
             - restore-fhirbridge-workspace
+            - start-ehrbase-database              # needed on machine executor only
             - start-ehrbase-server
             - start-fhirbridge-application
             - run-robot-integration-tests:
@@ -486,6 +487,17 @@ commands:
                 command: |
                     git clone git@github.com:ehrbase/ehrbase.git
                     ls -la
+
+    start-ehrbase-database:
+        steps:
+            - run:
+                name: Start ehrbase postgres database
+                command: |
+                    docker run  -d --name ehrdb \
+                                -e POSTGRES_USER=$POSTGRES_USER \
+                                -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -d \
+                                -e DISABLE_SECURITY=true \
+                                -p 5432:5432 ehrbase/ehrbase-postgres:latest
 
 
     build-ehrbase:
