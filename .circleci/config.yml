@@ -40,46 +40,46 @@ workflows:
                     branches:
                         ignore: gh-pages
 
-            # Execute Robot Integration Tests (Parallel Execution)
-            - BUNDLE-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # # Execute Robot Integration Tests (Parallel Execution)
+            # - BUNDLE-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
 
-            - CONDITION-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - CONDITION-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
             
-            - DIAGNOSTIC-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - DIAGNOSTIC-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
             
-            - IMMUNIZATION-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - IMMUNIZATION-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
 
-            - MEDICATIONSTATEMENT-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - MEDICATIONSTATEMENT-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
             
             - OBSERVATION-tests:
                 context: org-global
@@ -89,33 +89,33 @@ workflows:
                     branches:
                         ignore: gh-pages
             
-            - PROCEDURE-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - PROCEDURE-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
             
-            - QUESTIONAIRE-tests:
-                context: org-global
-                requires:
-                    - build-test-analyse-fhirbridge
-                filters:
-                    branches:
-                        ignore: gh-pages
+            # - QUESTIONAIRE-tests:
+            #     context: org-global
+            #     requires:
+            #         - build-test-analyse-fhirbridge
+            #     filters:
+            #         branches:
+            #             ignore: gh-pages
             
             - ROBOT-TEST-REPORT:
                 context: org-global
                 requires:
-                    - BUNDLE-tests
-                    - CONDITION-tests
-                    - DIAGNOSTIC-tests
-                    - IMMUNIZATION-tests
-                    - MEDICATIONSTATEMENT-tests
+                    # - BUNDLE-tests
+                    # - CONDITION-tests
+                    # - DIAGNOSTIC-tests
+                    # - IMMUNIZATION-tests
+                    # - MEDICATIONSTATEMENT-tests
                     - OBSERVATION-tests
-                    - PROCEDURE-tests
-                    - QUESTIONAIRE-tests
+                    # - PROCEDURE-tests
+                    # - QUESTIONAIRE-tests
 
 
             - tag-version:
@@ -199,8 +199,8 @@ jobs:
             - start-ehrbase-server
             - build-and-test-fhirbridge:
                 skip-javadoc: true
-                skip-jacoco: false
-                skip-tests: false
+                skip-jacoco: true                   # TODO: set to false on develop
+                skip-tests: true                    #
             - cache-in-ehrbase-m2-dependencies
             - cache-in-fhirbridge-m2-dependencies
             # - start-fhirbridge-application
@@ -211,8 +211,8 @@ jobs:
             - save-fhirbridge-test-results
             - save-jacoco-coverage-report
             - save-fhirbridge-workspace
-            - sonarcloud/scan:
-                cache_version: 2
+            # - sonarcloud/scan:                    # TODO: reactivate on develop branch
+            #     cache_version: 2
     
 
     BUNDLE-tests:
@@ -320,8 +320,8 @@ jobs:
                 include-tags: "observation"
                 test-suite-path: "OBSERVATION"
                 test-suite-name: "OBSERVATION"
-                runner: robot
-                pabot-split: ""
+                runner: pabot
+                pabot-split: "--testlevelsplit"
             - save-fhirbridge-robot-test-results
 
     PROCEDURE-tests:
