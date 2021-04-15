@@ -498,6 +498,7 @@ commands:
                                 -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -d \
                                 -e DISABLE_SECURITY=true \
                                 -p 5432:5432 ehrbase/ehrbase-postgres:latest
+                    sleep 1
 
 
     build-ehrbase:
@@ -583,6 +584,34 @@ commands:
 
     start-fhirbridge-application:
         steps:
+            - run:
+                name: WAIT FOR EHRBASE SERVER TO BE READY
+                command: |
+                    ls -la
+                    timeout=180
+                    while [ ! -f ehrbase/log ];
+                        do
+                            echo "Waiting for file ehrbase/log ..."
+                            if [ "$timeout" == 0 ]; then
+                                echo "ERROR: timed out while waiting for file ehrbase/log"
+                                exit 1
+                            fi
+                            sleep 1
+                        ((timeout--))
+                    done
+                    while ! (cat ehrbase/log | grep -m 1 "Started EhrBase in");
+                        do
+                            echo "waiting for EHRbase to be ready ...";
+                            if [ "$timeout" == 0 ]; then
+                                echo "WARNING: Did not see a startup message even after waiting 180s"
+                                cat ehrbase/log
+                                exit 1
+                            fi
+                            sleep 1;
+                        ((timeout--))
+                    done
+                    echo "REMAINING TIMEOUT: $timeout"
+                    jps
             - run:
                 name: START FHIRBRIDGE APPLICATION
                 background: true
