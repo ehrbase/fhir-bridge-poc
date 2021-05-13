@@ -17,7 +17,8 @@ public class AlterObservationConverter extends EntryEntityConverter<Patient, Alt
     @Override
     protected AlterObservation convertInternal(Patient resource) {
 
-        AlterObservation age = new AlterObservation();
+        AlterObservation age = null;
+
         Extension extensionAge = resource.getExtensionByUrl("https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/age");
 
         if (extensionAge != null) {
@@ -27,6 +28,7 @@ public class AlterObservationConverter extends EntryEntityConverter<Patient, Alt
 
             //TODO refactor
 
+            age = new AlterObservation();
             age.setOriginValue(dateTimeOfDocumentation);
             age.setTimeValue(dateTimeOfDocumentation);
             //age - Alter (ISO8601 duration e.g. P67Y)

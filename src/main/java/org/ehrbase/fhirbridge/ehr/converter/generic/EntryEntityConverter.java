@@ -25,9 +25,14 @@ public abstract class EntryEntityConverter<R extends Resource, E extends EntryEn
     @Override
     public E convert(@NonNull R resource) {
         E entity = convertInternal(resource);
-        // FIXME: this considers the entry is not null, there could be cases where the entry is optional and there is no data in the fhir resource to map with
-        entity.setLanguage(resolveLanguageOrDefault(resource));
-        entity.setSubject(new PartySelf());
+
+        // this was considering the entry was not null, there could be cases where the entry is optional
+        // in the OPT and there is no data in the fhir resource to map with, so not having an entry should
+        // produce a valid composition either way, but setting the values below gives NPE if this is not checked.
+        if (entity != null) {
+            entity.setLanguage(resolveLanguageOrDefault(resource));
+            entity.setSubject(new PartySelf());
+        }
         return entity;
     }
 

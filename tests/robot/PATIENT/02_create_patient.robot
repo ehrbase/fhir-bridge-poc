@@ -260,7 +260,9 @@ BUG TRACE 01 Create Patient (Invalid/Missing 'extension')
     $.extension[1]                                      missing	                201
 
     # invalid extension[1].url
-    $.extension[1].url                                  ${randurl}              422
+    # this was marked as invalid, but the profile doesn't have a constraint over the url format
+    # if the url changes, it means this is another extension, so is like removing the extension
+    $.extension[1].url                                  ${randurl}              201
     [Teardown]  TRACE GITHUB ISSUE  281
 
 

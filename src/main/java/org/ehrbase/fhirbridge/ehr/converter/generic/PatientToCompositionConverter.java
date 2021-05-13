@@ -14,15 +14,22 @@ public abstract class PatientToCompositionConverter<C extends CompositionEntity>
     @Override
     public C convert(@NonNull Patient resource) {
         C composition = super.convert(resource);
+
+        // default value
+        //composition.setStartTimeValue(Instant.now());
+        composition.setStartTimeValue(ZonedDateTime.now());
+
+        System.out.println("====== INSTANT ====");
+
         if (resource.hasExtension() && resource.hasBirthDate()) {
             Extension extensionAge = resource.getExtensionByUrl("https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/age");
             if (extensionAge != null) {
                 DateTimeType dateTimeOfDocumentationDt = (DateTimeType) extensionAge.getExtensionByUrl("dateTimeOfDocumentation").getValue();
                 ZonedDateTime dateTimeOfDocumentation = dateTimeOfDocumentationDt.getValueAsCalendar().toZonedDateTime();
                 composition.setStartTimeValue(dateTimeOfDocumentation);
+
+                System.out.println("====== ZONEDDATETIME ====");
             }
-        } else {
-            composition.setStartTimeValue(Instant.now());
         }
         return composition;
     }
