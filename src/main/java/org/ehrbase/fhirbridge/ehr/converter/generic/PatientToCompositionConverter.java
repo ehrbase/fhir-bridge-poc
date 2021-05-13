@@ -16,9 +16,11 @@ public abstract class PatientToCompositionConverter<C extends CompositionEntity>
         C composition = super.convert(resource);
         if (resource.hasExtension() && resource.hasBirthDate()) {
             Extension extensionAge = resource.getExtensionByUrl("https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/age");
-            DateTimeType dateTimeOfDocumentationDt = (DateTimeType) extensionAge.getExtensionByUrl("dateTimeOfDocumentation").getValue();
-            ZonedDateTime dateTimeOfDocumentation = dateTimeOfDocumentationDt.getValueAsCalendar().toZonedDateTime();
-            composition.setStartTimeValue(dateTimeOfDocumentation);
+            if (extensionAge != null) {
+                DateTimeType dateTimeOfDocumentationDt = (DateTimeType) extensionAge.getExtensionByUrl("dateTimeOfDocumentation").getValue();
+                ZonedDateTime dateTimeOfDocumentation = dateTimeOfDocumentationDt.getValueAsCalendar().toZonedDateTime();
+                composition.setStartTimeValue(dateTimeOfDocumentation);
+            }
         } else {
             composition.setStartTimeValue(Instant.now());
         }

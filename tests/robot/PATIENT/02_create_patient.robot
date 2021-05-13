@@ -255,7 +255,10 @@ BUG TRACE 01 Create Patient (Invalid/Missing 'extension')
     # FIELD/PATH							            VALUE					HTTP
 	# 																            CODE
     # invalid extension[1]
-    $.extension[1]                                      missing	                422
+    #$.extension[1]                                      missing	                422
+    # this is not an invalid thing, since it is removing the 'age' extension which is optional in the profile, so it should be accepted
+    $.extension[1]                                      missing	                201
+
     # invalid extension[1].url
     $.extension[1].url                                  ${randurl}              422
     [Teardown]  TRACE GITHUB ISSUE  281

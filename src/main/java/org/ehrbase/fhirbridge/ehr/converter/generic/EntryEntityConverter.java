@@ -25,6 +25,7 @@ public abstract class EntryEntityConverter<R extends Resource, E extends EntryEn
     @Override
     public E convert(@NonNull R resource) {
         E entity = convertInternal(resource);
+        // FIXME: this considers the entry is not null, there could be cases where the entry is optional and there is no data in the fhir resource to map with
         entity.setLanguage(resolveLanguageOrDefault(resource));
         entity.setSubject(new PartySelf());
         return entity;
