@@ -35,6 +35,7 @@ import org.ehrbase.fhirbridge.ehr.converter.specific.stationaererversorgungsfall
 import org.ehrbase.fhirbridge.ehr.converter.specific.symptom.SymptomCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.therapy.TherapyCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.geccoVirologischerbefund.PCRCompositionConverter;
+import org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund.VirologischerBefundCompositionConverter;
 import org.ehrbase.fhirbridge.fhir.common.Profile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -113,6 +114,7 @@ public class ConversionConfiguration {
 
         conversionService.registerConverter(Profile.TRAVEL_HISTORY, new HistoryOfTravelCompositionConverter());
         conversionService.registerConverter(Profile.OXYGEN_SATURATION, new PulseOximetryCompositionConverter());
+        conversionService.registerConverter(Profile.VIROLOGISCHER_BEFUND, new VirologischerBefundCompositionConverter());
     }
 
     private void registerPatientConverters(ConversionService conversionService) {

@@ -16,6 +16,8 @@ public class Bundles {
                 return Profile.ANTI_BODY_PANEL;
             } else if (Resources.hasProfile(entry.getResource(), Profile.DIAGNOSTIC_REPORT_LAB)) {
                 return Profile.DIAGNOSTIC_REPORT_LAB;
+            } else if (Resources.hasProfile(entry.getResource(), Profile.VIROLOGISCHER_BEFUND)) {
+                return Profile.VIROLOGISCHER_BEFUND;
             }
         }
         return null;

@@ -114,6 +114,8 @@ public enum Profile {
 
     ANTI_BODY_PANEL(Observation.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/sars-cov-2-ab-pnl-ser-pl-ia"),
 
+    VIROLOGISCHER_BEFUND(Observation.class, "http://highmed.org/StructureDefinition/VirologischerBefund"),
+
     // Patient Profiles
 
     PATIENT(Patient.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/Patient"),

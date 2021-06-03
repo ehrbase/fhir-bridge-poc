@@ -22,9 +22,11 @@ import org.ehrbase.fhirbridge.camel.CamelConstants;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.AntiBodyPanelConverter;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.BloodGasPanelConverter;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.DiagnosticReportLabConverter;
+import org.ehrbase.fhirbridge.fhir.bundle.converter.VirologischerBefundConverter;
 import org.ehrbase.fhirbridge.fhir.bundle.validator.AntiBodyPanelBundleValidator;
 import org.ehrbase.fhirbridge.fhir.bundle.validator.BloodGasPanelBundleValidator;
 import org.ehrbase.fhirbridge.fhir.bundle.validator.DiagnosticReportLabBundleValidator;
+import org.ehrbase.fhirbridge.fhir.bundle.validator.VirologischerBefundBundleValidator;
 import org.ehrbase.fhirbridge.fhir.common.Profile;
 import org.ehrbase.fhirbridge.fhir.support.Bundles;
 import org.springframework.stereotype.Component;
@@ -56,6 +58,8 @@ public class BundleRoutes extends AbstractRouteBuilder {
                         .to("direct:process-anti-body-panel-bundle")
                     .when(header(CamelConstants.PROFILE).isEqualTo(Profile.DIAGNOSTIC_REPORT_LAB))
                         .to("direct:process-diagnostic-report-lab-bundle")
+                    .when(header(CamelConstants.PROFILE).isEqualTo(Profile.VIROLOGISCHER_BEFUND))
+                        .to("direct:process-virologischer-befund-bundle")
                     .otherwise()
                         .throwException(new UnprocessableEntityException("Unsupported transaction: provided Bundle should have a resource that " +
                                 "uses on of the following profiles: " + Profile.BLOOD_GAS_PANEL.getUri() + ", " + Profile.DIAGNOSTIC_REPORT_LAB.getUri()));
@@ -78,6 +82,13 @@ public class BundleRoutes extends AbstractRouteBuilder {
                 .bean(DiagnosticReportLabConverter.class, CONVERT)
                 .to("direct:internal-provide-diagnostic-report")
                 .process(BUNDLE_RESPONSE_PROCESSOR);
+
+        from("direct:process-virologischer-befund-bundle")
+                .bean(VirologischerBefundBundleValidator.class)
+                .bean(VirologischerBefundConverter.class, CONVERT)
+                .to("direct:internal-provide-observation")
+                .process(BUNDLE_RESPONSE_PROCESSOR);
+
 
         // @formatter:on
     }
