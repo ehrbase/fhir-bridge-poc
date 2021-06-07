@@ -6,9 +6,6 @@ import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Specimen;
 import org.hl7.fhir.r4.model.Resource;
 
-import java.util.Optional;
-
-
 public class VirologischerBefundBundle {
 
     private Observation virologischerBefund = new Observation();

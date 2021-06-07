@@ -1,6 +1,5 @@
 package org.ehrbase.fhirbridge.fhir.bundle.validator;
 
-import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 import org.hl7.fhir.r4.model.Bundle;
 

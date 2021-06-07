@@ -6,10 +6,13 @@ import com.nedap.archie.rm.datavalues.DvCodedText;
 import java.time.temporal.TemporalAccessor;
 import java.util.List;
 import javax.annotation.processing.Generated;
+
+import com.nedap.archie.rm.generic.PartyProxy;
 import org.ehrbase.client.annotations.Entity;
 import org.ehrbase.client.annotations.OptionFor;
 import org.ehrbase.client.annotations.Path;
 import org.ehrbase.client.classgenerator.interfaces.PointEventEntity;
+import org.ehrbase.client.classgenerator.shareddefinition.Language;
 import org.ehrbase.client.classgenerator.shareddefinition.NullFlavour;
 
 @Entity
@@ -80,6 +83,18 @@ public class BefundJedesEreignisPointEvent implements PointEventEntity, BefundJe
    */
   @Path("/state[at0112]/items[at0114]")
   private List<Cluster> strukturierteErfassungDerStoerfaktoren;
+
+  /**
+   * Path: Virologischer Befund/Befund/subject
+   */
+  @Path("/subject")
+  private PartyProxy subject;
+
+  /**
+   * Path: Virologischer Befund/Befund/language
+   */
+  @Path("/language")
+  private Language language;
 
   /**
    * Path: Virologischer Befund/Befund/Jedes Ereignis/feeder_audit
@@ -174,4 +189,21 @@ public class BefundJedesEreignisPointEvent implements PointEventEntity, BefundJe
   public TemporalAccessor getTimeValue() {
      return this.timeValue ;
   }
+
+  public void setSubject(PartyProxy subject) {
+      this.subject = subject;
+  }
+
+  public PartyProxy getSubject() {
+      return this.subject ;
+  }
+
+  public void setLanguage(Language language) {
+      this.language = language;
+  }
+
+  public Language getLanguage() {
+        return this.language ;
+    }
+
 }

@@ -7,14 +7,6 @@ import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytZugehoerigeLaborprobeDvIdentifier;
 
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.UriType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.net.URI;
-
 
 public class ProAnalytZugehoerigeLaborprobeChoiceConverter extends ProAnalytZugehoerigeLaborprobeDvIdentifier {
 

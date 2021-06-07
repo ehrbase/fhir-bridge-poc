@@ -1,36 +1,31 @@
 package org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
+import org.ehrbase.fhirbridge.ehr.converter.generic.ObservationToPointEventConverter;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.BefundJedesEreignisPointEvent;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.LabortestPanelCluster;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytCluster;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProbeCluster;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.AnatomischeLokalisationCluster;
-
+import org.ehrbase.fhirbridge.ehr.converter.generic.ObservationToObservationConverter;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Specimen;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.Period;
-import java.time.ZonedDateTime;
 
-public class BefundJedesEreignisPointEventConverter extends BefundJedesEreignisPointEvent {
+public class BefundJedesEreignisPointEventConverter extends ObservationToPointEventConverter<BefundJedesEreignisPointEvent> {
 
-    protected BefundJedesEreignisPointEvent convert(Observation observation) throws FHIRException {
+    @Override
+    protected BefundJedesEreignisPointEvent convertInternal(Observation observation) throws FHIRException {
 
         Specimen specimen = observation.getSpecimenTarget();
 
         BefundJedesEreignisPointEvent befundevent = new BefundJedesEreignisPointEvent();
-
-        befundevent.setTimeValue(observation.getEffectiveDateTimeType().getValueAsCalendar().toZonedDateTime());
 
         mapLabortestbezeichnung(observation, befundevent);
         mapProbe(befundevent, specimen);
@@ -48,7 +43,7 @@ public class BefundJedesEreignisPointEventConverter extends BefundJedesEreignisP
 
     private void mapLabortestbezeichnung(Observation observation, BefundJedesEreignisPointEvent befundevent) {
 
-        if(observation.getCategory().get(0).getCoding().get(0).getCode().equals("122442008")) {
+        if(observation.getCategory().get(0).getCoding().get(2).getCode().equals("122442008")) {
             befundevent.setLabortestBezeichnung(LabortestBezeichnungDefiningCode.DETECTION_OF_VIRUS_PROCEDURE.toDvCodedText());
         }else{
             throw new UnprocessableEntityException("createLabortestBezeichnungDefiningCode failed.");

@@ -6,13 +6,13 @@ import org.ehrbase.client.classgenerator.EnumValueSet;
 public enum ErgebnisStatusDefiningCode implements EnumValueSet {
   ENDBEFUND("Endbefund", "Das Analyseergebnis ist vollständig und durch eine autorisierte Person verifiziert.", "local", "at0018"),
 
-  ERFASST("Erfasst", "Der Test ist im Laborinformationssystem erfasst, aber noch kein Ergebnis verfügbar.", "local", "at0015"),
+  REGISTRIERT("Registriert", "Der Test ist im Laborinformationssystem erfasst, aber noch kein Ergebnis verfügbar.", "local", "at0015"),
 
-  ENDBEFUND_ERGAENZT("Endbefund, ergänzt", "Nach Abschluss wurde der Bericht durch das Hinzufügen neuer Inhalte abgeändert. Die vorhandene Inhalte sind unverändert. Dies ist eine Unterkategorie von \"Endbefund, geändert\".", "local", "at0021"),
+  ERGAENZT("Ergänzt", "Nach Abschluss wurde der Bericht durch das Hinzufügen neuer Inhalte abgeändert. Die vorhandene Inhalte sind unverändert. Dies ist eine Unterkategorie von \"geändert\".", "local", "at0021"),
 
-  ENDBEFUND_KORRIGIERT("Endbefund, korrigiert", "Das Ergebnis wurde nach dem endgültigen Ergebnis korrigiert und vom zuständigen Laborwissenschaftler vervollständigt und verifiziert. Dies ist eine Unterkategorie von \"Endbefund, geändert\".", "local", "at0019"),
+  KORRIGIERT("Korrigiert", "Das Ergebnis wurde nach dem endgültigen Ergebnis korrigiert und vom zuständigen Laborwissenschaftler vervollständigt und verifiziert. Dies ist eine Unterkategorie von \"geändert\".", "local", "at0019"),
 
-  ENDBEFUND_GEAENDERT("Endbefund, geändert", "Das Ergebnis wurde nach dem endgültigen Ergebnis geändert und vom zuständigen Laborwissenschaftler vervollständigt und verifiziert. Die Ergebnisdaten wurden geändert.", "local", "at0020"),
+  GEAENDERT("Geändert", "Das Ergebnis wurde nach dem endgültigen Ergebnis geändert und vom zuständigen Laborwissenschaftler vervollständigt und verifiziert. Die Ergebnisdaten wurden geändert.", "local", "at0020"),
 
   STORNIERT("Storniert", "Das Testergebnis ist nicht verfügbar, weil der Test nicht (vollständig) durchgeführt oder abgebrochen wurde.", "local", "at0023"),
 

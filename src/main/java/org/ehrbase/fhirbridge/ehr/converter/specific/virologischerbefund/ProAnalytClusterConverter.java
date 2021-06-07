@@ -2,6 +2,7 @@ package org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund;
 
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
+import org.ehrbase.client.annotations.Path;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytCluster;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytErgebnisStatusElement;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytQuantitativesErgebnisElement;
@@ -20,13 +21,11 @@ public class ProAnalytClusterConverter extends ProAnalytCluster {
 
         ProAnalytCluster proAnalytCluster = new ProAnalytCluster();
 
-
-        mapNachweistest(observation, proAnalytCluster);
-
         if (observation.hasValueCodeableConcept()){
+            mapNachweistest(observation, proAnalytCluster);
             mapVirusnachweistest(observation, proAnalytCluster);
         } else if (observation.hasValueQuantity()) {
-            List<ProAnalytQuantitativesErgebnisElement>  proAnalytQuantitativesErgebnisElementList = new ArrayList();
+            List<ProAnalytQuantitativesErgebnisElement>  proAnalytQuantitativesErgebnisElementList = new ArrayList<>();
             proAnalytQuantitativesErgebnisElementList.add(new ProAnalytQuantitativesErgebnisElementConverter().convert(observation));
             proAnalytCluster.setQuantitativesErgebnis(proAnalytQuantitativesErgebnisElementList);
 
@@ -35,17 +34,14 @@ public class ProAnalytClusterConverter extends ProAnalytCluster {
             throw new UnprocessableEntityException ("Observation needs either ValueCodeableConcept or ValueQuantity.");
         }
 
-
-
-        List <ProAnalytErgebnisStatusElement> proAnalytErgebnisStatusElementList = new ArrayList();
+        List <ProAnalytErgebnisStatusElement> proAnalytErgebnisStatusElementList = new ArrayList<>();
         proAnalytErgebnisStatusElementList.add(new ProAnalytErgebnisStatusElementConverter().convert(observation));
         proAnalytCluster.setErgebnisStatus(proAnalytErgebnisStatusElementList);
-
 
         ProAnalytZugehoerigeLaborprobeChoice proAnalytZugehoerigeLaborprobeChoice = new ProAnalytZugehoerigeLaborprobeChoiceConverter().convertDvIdentifier(observation);
         proAnalytCluster.setZugehoerigeLaborprobe(proAnalytZugehoerigeLaborprobeChoice);
 
-        if (proAnalytCluster.getErgebnisStatus().equals(null) || proAnalytCluster.getErgebnisStatus().equals("")){
+        if (proAnalytCluster.getZugehoerigeLaborprobe() == null){
             ProAnalytZugehoerigeLaborprobeChoice proAnalytZugehoerigeLaborprobeChoice2 = new ProAnalytZugehoerigeLaborprobeChoiceConverter().convertDvUri(observation);
             proAnalytCluster.setZugehoerigeLaborprobe(proAnalytZugehoerigeLaborprobeChoice2);
         }

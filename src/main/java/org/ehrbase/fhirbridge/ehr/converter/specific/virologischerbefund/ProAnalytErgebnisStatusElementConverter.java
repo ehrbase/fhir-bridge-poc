@@ -15,11 +15,10 @@ public class ProAnalytErgebnisStatusElementConverter extends ProAnalytErgebnisSt
 
         ProAnalytErgebnisStatusElement proAnalytErgebnisStatusElement = new ProAnalytErgebnisStatusElement();
 
-        List <ProAnalytErgebnisStatusChoice>   proAnalytErgebnisStatusChoiceList = new ArrayList();
+        List <ProAnalytErgebnisStatusChoice>  proAnalytErgebnisStatusChoiceList = new ArrayList<>();
         proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvCodedText(observation));
         proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvText(observation));
         proAnalytErgebnisStatusElement.setValue2(proAnalytErgebnisStatusChoiceList);
-
 
         return proAnalytErgebnisStatusElement;
 

@@ -12,7 +12,7 @@ public class ProAnalytQuantitativesErgebnisElementConverter extends ProAnalytQua
     public ProAnalytQuantitativesErgebnisElement convert(Observation observation){
 
         ProAnalytQuantitativesErgebnisElement proAnalytQuantitativesErgebnisElement = new ProAnalytQuantitativesErgebnisElement();
-        List <ProAnalytQuantitativesErgebnisChoice>   proAnalytQuantitativesErgebnisChoiceList = new ArrayList();
+        List <ProAnalytQuantitativesErgebnisChoice> proAnalytQuantitativesErgebnisChoiceList = new ArrayList<>();
 
         proAnalytQuantitativesErgebnisChoiceList.add(new ProAnalytQuantitativesErgebnisChoiceConverter().convertDvQuantity(observation));
         proAnalytQuantitativesErgebnisChoiceList.add(new ProAnalytQuantitativesErgebnisChoiceConverter().convertDvCount(observation));
