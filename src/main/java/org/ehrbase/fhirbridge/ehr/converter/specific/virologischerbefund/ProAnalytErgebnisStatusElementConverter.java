@@ -1,5 +1,6 @@
 package org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund;
 
+import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytErgebnisStatusElement;
 
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytErgebnisStatusChoice;
@@ -14,10 +15,11 @@ public class ProAnalytErgebnisStatusElementConverter extends ProAnalytErgebnisSt
     public ProAnalytErgebnisStatusElement convert(Observation observation){
 
         ProAnalytErgebnisStatusElement proAnalytErgebnisStatusElement = new ProAnalytErgebnisStatusElement();
-
         List <ProAnalytErgebnisStatusChoice>  proAnalytErgebnisStatusChoiceList = new ArrayList<>();
+
         proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvCodedText(observation));
         proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvText(observation));
+
         proAnalytErgebnisStatusElement.setValue2(proAnalytErgebnisStatusChoiceList);
 
         return proAnalytErgebnisStatusElement;

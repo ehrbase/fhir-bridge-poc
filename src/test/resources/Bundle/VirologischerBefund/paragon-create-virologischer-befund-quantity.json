@@ -268,14 +268,14 @@
                           },
                           "value": {
                             "_type": "DV_CODED_TEXT",
-                            "value": "Inconclusive (qualifier value)",
+                            "value": "Detected (qualifier value)",
                             "defining_code": {
                               "_type": "CODE_PHRASE",
                               "terminology_id": {
                                 "_type": "TERMINOLOGY_ID",
                                 "value": "SNOMED Clinical Terms"
                               },
-                              "code_string": "419984006"
+                              "code_string": "260373001"
                             }
                           },
                           "archetype_node_id": "at0001"
@@ -284,21 +284,14 @@
                           "_type": "ELEMENT",
                           "name": {
                             "_type": "DV_TEXT",
-                            "value": "Virusnachweistest"
+                            "value": "Quantitatives Ergebnis"
                           },
                           "value": {
-                            "_type": "DV_CODED_TEXT",
-                            "value": "SARS-CoV-2 Ag",
-                            "defining_code": {
-                              "_type": "CODE_PHRASE",
-                              "terminology_id": {
-                                "_type": "TERMINOLOGY_ID",
-                                "value": "LOINC"
-                              },
-                              "code_string": "94558-4"
-                            }
+                            "_type": "DV_QUANTITY",
+                            "units": "µmol/l",
+                            "magnitude": 72
                           },
-                          "archetype_node_id": "at0024"
+                          "archetype_node_id": "at0001"
                         },
                         {
                           "_type": "ELEMENT",

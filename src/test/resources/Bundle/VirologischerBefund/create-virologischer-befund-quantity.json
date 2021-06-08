@@ -73,7 +73,7 @@
         },
         "effectiveDateTime": "2021-05-16T08:49:21+02:00",
         "valueQuantity": {
-          "value": 72,
+          "value": 72.0,
           "unit": "µmol/l",
           "system": "http://unitsofmeasure.org",
           "code": "umol/L"

@@ -15,7 +15,9 @@ public class ProAnalytQuantitativesErgebnisElementConverter extends ProAnalytQua
         List <ProAnalytQuantitativesErgebnisChoice> proAnalytQuantitativesErgebnisChoiceList = new ArrayList<>();
 
         proAnalytQuantitativesErgebnisChoiceList.add(new ProAnalytQuantitativesErgebnisChoiceConverter().convertDvQuantity(observation));
-        proAnalytQuantitativesErgebnisChoiceList.add(new ProAnalytQuantitativesErgebnisChoiceConverter().convertDvCount(observation));
+        if (proAnalytQuantitativesErgebnisChoiceList.isEmpty()){
+            proAnalytQuantitativesErgebnisChoiceList.add(new ProAnalytQuantitativesErgebnisChoiceConverter().convertDvCount(observation));
+        }
         proAnalytQuantitativesErgebnisElement.setValue2(proAnalytQuantitativesErgebnisChoiceList);
 
         return proAnalytQuantitativesErgebnisElement;
