@@ -14,7 +14,7 @@ public class ProAnalytErgebnisStatusElementConverter {
         ProAnalytErgebnisStatusElement proAnalytErgebnisStatusElement = new ProAnalytErgebnisStatusElement();
         List <ProAnalytErgebnisStatusChoice>  proAnalytErgebnisStatusChoiceList = new ArrayList<>();
 
-        if(!observation.getStatus().equals(Observation.ObservationStatus.ENTEREDINERROR)){
+        if(!observation.getStatus().equals(Observation.ObservationStatus.UNKNOWN)){
             proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvCodedText(observation));
         }else{
             proAnalytErgebnisStatusChoiceList.add(new ProAnalytErgebnisStatusChoiceConverter().convertDvText(observation));

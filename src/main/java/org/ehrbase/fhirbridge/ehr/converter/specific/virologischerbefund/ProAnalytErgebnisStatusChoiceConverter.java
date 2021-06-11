@@ -36,16 +36,16 @@ public class ProAnalytErgebnisStatusChoiceConverter {
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.ENDBEFUND);
                 break;
             case AMENDED:
-                proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.GEAENDERT);
+                proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.ERGAENZT);
                 break;
             case CORRECTED:
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.KORRIGIERT);
                 break;
             case CANCELLED:
-                proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.ENDBEFUND_WIDERRUFEN);
-                break;
-            case NULL:
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.STORNIERT);
+                break;
+            case ENTEREDINERROR:
+                proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.ENDBEFUND_WIDERRUFEN);
                 break;
             default:
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.UNVOLLSTAENDIG);
