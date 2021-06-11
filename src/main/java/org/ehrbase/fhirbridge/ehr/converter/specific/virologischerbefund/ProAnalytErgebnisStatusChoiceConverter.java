@@ -9,7 +9,7 @@ import org.hl7.fhir.r4.model.Observation;
 import java.lang.String;
 
 
-public class ProAnalytErgebnisStatusChoiceConverter extends ProAnalytErgebnisStatusDvText {
+public class ProAnalytErgebnisStatusChoiceConverter {
 
     public ProAnalytErgebnisStatusChoice convertDvText(Observation observation){
 
@@ -35,7 +35,7 @@ public class ProAnalytErgebnisStatusChoiceConverter extends ProAnalytErgebnisSta
             case FINAL:
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.ENDBEFUND);
                 break;
-            case AMENDED :
+            case AMENDED:
                 proAnalytErgebnisStatusDvCodedText.setErgebnisStatusDefiningCode(ErgebnisStatusDefiningCode.GEAENDERT);
                 break;
             case CORRECTED:

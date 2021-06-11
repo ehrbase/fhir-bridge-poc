@@ -2,7 +2,6 @@ package org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund;
 
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
-import org.ehrbase.client.annotations.Path;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytCluster;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytErgebnisStatusElement;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytQuantitativesErgebnisElement;
@@ -15,7 +14,7 @@ import org.hl7.fhir.r4.model.Observation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProAnalytClusterConverter extends ProAnalytCluster {
+public class ProAnalytClusterConverter {
 
     public ProAnalytCluster convert(Observation observation) throws FHIRException {
 

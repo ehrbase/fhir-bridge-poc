@@ -154,7 +154,7 @@ public class VirologischerBefundIT extends AbstractBundleMappingTestSetupIT {
         VirologischerBefundCompositionConverter virologischerBefundCompositionConverter = new VirologischerBefundCompositionConverter();
         VirologischerBefundComposition mappedVirologischerBefundComposition = virologischerBefundCompositionConverter.convert(observation);
         Diff diff = compareCompositions(getJavers(), paragonPath, mappedVirologischerBefundComposition);
-        assertEquals(diff.getChanges().size(), 4);
+        assertEquals(diff.getChanges().size(), 3);
     }
 
     public void testMappingQuantity(String resourcePath, String paragonPath) throws IOException{
@@ -164,7 +164,7 @@ public class VirologischerBefundIT extends AbstractBundleMappingTestSetupIT {
         VirologischerBefundCompositionConverter virologischerBefundCompositionConverter = new VirologischerBefundCompositionConverter();
         VirologischerBefundComposition mappedVirologischerBefundComposition = virologischerBefundCompositionConverter.convert(observation);
         Diff diff = compareCompositions(getJavers(), paragonPath, mappedVirologischerBefundComposition);
-        assertEquals(diff.getChanges().size(), 4);
+        assertEquals(diff.getChanges().size(), 3);
     }
 
     public Exception executeValidatorException(String path) throws IOException {

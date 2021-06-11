@@ -1,6 +1,5 @@
 package org.ehrbase.fhirbridge.ehr.converter.specific.virologischerbefund;
 
-import org.ehrbase.client.classgenerator.shareddefinition.Language;
 import org.ehrbase.fhirbridge.ehr.converter.generic.ObservationToCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.VirologischerBefundComposition;
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.FallidentifikationCluster;
@@ -10,7 +9,6 @@ import org.springframework.lang.NonNull;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 
 public class VirologischerBefundCompositionConverter extends ObservationToCompositionConverter<VirologischerBefundComposition> {
-
 
         @Override
         public VirologischerBefundComposition convertInternal(@NonNull Observation resource) {
@@ -27,17 +25,14 @@ public class VirologischerBefundCompositionConverter extends ObservationToCompos
             mapStatus(composition, diagnosticReport);
             mapFallIdentifikation(composition, diagnosticReport);
             composition.setBefund(new VirologischerBefundObservationConverter().convert(observation));
+
             return composition;
         }
 
-
-
     private void mapStatus(VirologischerBefundComposition composition, DiagnosticReport diagnosticReport) {
-
         String codeString = diagnosticReport.getStatusElement().toString();
         composition.setStatusValue(codeString);
     }
-
 
     private void mapFallIdentifikation(VirologischerBefundComposition composition, DiagnosticReport diagnosticReport) {
         FallidentifikationCluster fallidentifikationCluster = new FallidentifikationCluster();
@@ -45,8 +40,5 @@ public class VirologischerBefundCompositionConverter extends ObservationToCompos
         fallidentifikationCluster.setFallKennungValue(codeString);
         composition.setFallidentifikation(fallidentifikationCluster);
     }
-
-
-
 
 }

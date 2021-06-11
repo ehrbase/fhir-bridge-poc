@@ -5,7 +5,7 @@ import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.
 import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.ProAnalytQuantitativesErgebnisDvCount;
 import org.hl7.fhir.r4.model.Observation;
 
-public class ProAnalytQuantitativesErgebnisChoiceConverter extends ProAnalytQuantitativesErgebnisDvQuantity{
+public class ProAnalytQuantitativesErgebnisChoiceConverter {
 
     public ProAnalytQuantitativesErgebnisChoice convertDvQuantity(Observation observation){
 

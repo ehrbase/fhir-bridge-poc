@@ -8,7 +8,7 @@ import org.ehrbase.fhirbridge.ehr.opt.virologischerbefundcomposition.definition.
 
 import org.hl7.fhir.r4.model.Observation;
 
-public class ProAnalytZugehoerigeLaborprobeChoiceConverter extends ProAnalytZugehoerigeLaborprobeDvIdentifier {
+public class ProAnalytZugehoerigeLaborprobeChoiceConverter {
 
     public ProAnalytZugehoerigeLaborprobeChoice convertDvIdentifier(Observation observation){
 
