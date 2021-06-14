@@ -37,16 +37,14 @@ public class ProAnalytClusterConverter {
         proAnalytErgebnisStatusElementList.add(new ProAnalytErgebnisStatusElementConverter().convert(observation));
         proAnalytCluster.setErgebnisStatus(proAnalytErgebnisStatusElementList);
 
-        ProAnalytZugehoerigeLaborprobeChoice proAnalytZugehoerigeLaborprobeChoice = new ProAnalytZugehoerigeLaborprobeChoiceConverter().convertDvIdentifier(observation);
-        proAnalytCluster.setZugehoerigeLaborprobe(proAnalytZugehoerigeLaborprobeChoice);
-
-        if (proAnalytCluster.getZugehoerigeLaborprobe() == null){
+        if (observation.getSpecimen().hasIdentifier()){
+            ProAnalytZugehoerigeLaborprobeChoice proAnalytZugehoerigeLaborprobeChoice = new ProAnalytZugehoerigeLaborprobeChoiceConverter().convertDvIdentifier(observation);
+            proAnalytCluster.setZugehoerigeLaborprobe(proAnalytZugehoerigeLaborprobeChoice);
+        }else if (observation.getSpecimen().hasTypeElement()){
             ProAnalytZugehoerigeLaborprobeChoice proAnalytZugehoerigeLaborprobeChoice2 = new ProAnalytZugehoerigeLaborprobeChoiceConverter().convertDvUri(observation);
             proAnalytCluster.setZugehoerigeLaborprobe(proAnalytZugehoerigeLaborprobeChoice2);
         }
-
         return proAnalytCluster;
-
     }
 
     private void mapVirusnachweistest(Observation observation, ProAnalytCluster proAnalytCluster){
