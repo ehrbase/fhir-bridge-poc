@@ -20,14 +20,14 @@ public class ProAnalytClusterConverter {
 
         ProAnalytCluster proAnalytCluster = new ProAnalytCluster();
 
+        mapVirusnachweistest(observation, proAnalytCluster);
+
         if (observation.hasValueCodeableConcept()){
             mapNachweistest(observation, proAnalytCluster);
-            mapVirusnachweistest(observation, proAnalytCluster);
         } else if (observation.hasValueQuantity()) {
             List<ProAnalytQuantitativesErgebnisElement>  proAnalytQuantitativesErgebnisElementList = new ArrayList<>();
             proAnalytQuantitativesErgebnisElementList.add(new ProAnalytQuantitativesErgebnisElementConverter().convert(observation));
             proAnalytCluster.setQuantitativesErgebnis(proAnalytQuantitativesErgebnisElementList);
-
             proAnalytCluster.setNachweis(NachweisDefiningCode.DETECTED_QUALIFIER_VALUE.toDvCodedText());
         } else{
             throw new UnprocessableEntityException ("Observation needs either ValueCodeableConcept or ValueQuantity.");

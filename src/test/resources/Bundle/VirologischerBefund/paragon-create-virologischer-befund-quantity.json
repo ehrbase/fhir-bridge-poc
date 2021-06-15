@@ -18,7 +18,7 @@
     "originating_system_item_ids": [
       {
         "_type": "DV_IDENTIFIER",
-        "id": "Observation/2/_history/1",
+        "id": "Observation/3/_history/1",
         "type": "fhir_logical_id"
       }
     ],
@@ -292,6 +292,26 @@
                             "magnitude": 72
                           },
                           "archetype_node_id": "at0001"
+                        },
+                        {
+                          "_type": "ELEMENT",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Virusnachweistest"
+                          },
+                          "value": {
+                            "_type": "DV_CODED_TEXT",
+                            "value": "SARS-CoV-2 Ag",
+                            "defining_code": {
+                              "_type": "CODE_PHRASE",
+                              "terminology_id": {
+                                "_type": "TERMINOLOGY_ID",
+                                "value": "LOINC"
+                              },
+                              "code_string": "94558-4"
+                            }
+                          },
+                          "archetype_node_id": "at0024"
                         },
                         {
                           "_type": "ELEMENT",
