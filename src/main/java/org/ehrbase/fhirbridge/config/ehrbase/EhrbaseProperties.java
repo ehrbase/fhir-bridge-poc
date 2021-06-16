@@ -126,6 +126,6 @@ public class EhrbaseProperties {
 
     public enum AuthorizationType {
 
-        BASIC_AUTH, NONE
+        BASIC, NONE
     }
 }

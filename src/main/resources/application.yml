@@ -1,32 +1,58 @@
 # @formatter:off
 
-#
-# FHIR Bridge Properties
-#
+################################################################################
+# FHIR Bridge Properties                                                       #
+################################################################################
+
 fhir-bridge:
-  # CORS Properties
+# CORS Properties
   cors:
     allow-credentials: false
     allowed-headers: '*'
     allowed-methods: '*'
     allowed-origins: '*'
-  # Debug Properties
+# Debug Properties
   debug:
     enabled: false
     mapping-output-directory: ${java.io.tmpdir}/mappings
-  # EHRbase Properties
+# EHRbase Properties
   ehrbase:
     base-url: http://localhost:8080/ehrbase/rest/openehr/v1/
     security:
-      type: basic_auth
+      type: basic
       user: myuser
       password: myPassword432
       admin-user: myadmin
       admin-password: mySuperAwesomePassword123
     template:
       prefix: classpath:/opt/
-#      force-update: false
-  # Security Properties
+      force-update: false
+# FHIR Properties
+#  fhir:
+#    jpa:
+#      allow-external-references:
+#      allow-inline-match-url-references:
+#      auto-create-placeholder-references:
+#      populate-identifier-in-auto-created-placeholder-references:
+#    validation:
+#      any-extensions-allowed:
+#      error-for-unknown-profiles:
+#      failed-on-severity:
+#      terminology:
+#        mode:
+#        server-base-url:
+# HTTP Client Properties
+#  http-client:
+#    ssl:
+#      enabled:
+#      key-password:
+#      key-store:
+#      key-store-password:
+#      key-store-type:
+#      trust-store:
+#      trust-store-password:
+#      trust-store-type:
+# Security Properties
   security:
     authentication-type: none
 #    basic:
@@ -36,9 +62,10 @@ fhir-bridge:
 #      jwk-set-uri:
 #      jws-algorithm: RS256
 
-#
-# Spring Properties
-#
+################################################################################
+# Spring Properties                                                            #
+################################################################################
+
 spring:
   application:
     name: FHIR Bridge
@@ -50,16 +77,15 @@ spring:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
-  # Batch Properties
+# Batch Properties
   batch:
     job:
       enabled: false
-  # JPA Properties
+# JPA Properties
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
-    # Hibernate Properties
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
       hibernate.search.enabled: true
@@ -68,7 +94,7 @@ spring:
       hibernate.search.backend.directory.type: local-filesystem
       hibernate.search.backend.directory.root: ${java.io.tmpdir}/fhir-bridge/lucenefiles
       hibernate.search.backend.lucene_version: lucene_current
-  # Liquibase Properties
+# Liquibase Properties
   liquibase:
     database-change-log-table: DATABASE_CHANGELOG
     database-change-log-lock-table: DATABASE_CHANGELOG_LOCK
@@ -76,33 +102,12 @@ spring:
   messages:
     basename: messages/messages
     use-code-as-default-message: true
-
-#
-# IPF Properties
-#
-ipf:
-  # Audit Properties
-  atna:
-    audit-enabled: false
-#    audit-repository-host:
-#    audit-repository-port:
-#    audit-source-id:
-#    audit-value-if-missing:
-  # FHIR Properties
-  fhir:
-    fhir-version: r4
-
-#
 # Server Properties
-#
 server:
   port: 8888
   servlet:
     context-path: /fhir-bridge
-
-#
 # Logging Properties
-#
 logging:
   level:
     ca.uhn.fhir: warn
@@ -115,6 +120,23 @@ logging:
     org.quartz: warn
     org.springframework: warn
     org.springframework.boot: warn
+
+################################################################################
+# Open eHealth Integration Platform Properties                                 #
+################################################################################
+
+ipf:
+  # Audit Properties
+  atna:
+    audit-enabled: false
+#    audit-repository-host:
+#    audit-repository-port:
+#    audit-source-id:
+#    audit-value-if-missing:
+  # FHIR Properties
+  fhir:
+    fhir-version: r4
+
 
 demographics:
   patient:

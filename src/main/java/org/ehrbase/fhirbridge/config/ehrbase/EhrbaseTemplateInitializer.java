@@ -107,7 +107,7 @@ public class EhrbaseTemplateInitializer implements InitializingBean {
         var webClientBuilder = WebClient.builder();
 
         var security = properties.getSecurity();
-        if (security.getType() == EhrbaseProperties.AuthorizationType.BASIC_AUTH) {
+        if (security.getType() == EhrbaseProperties.AuthorizationType.BASIC) {
             webClientBuilder.filter(ExchangeFilterFunctions.basicAuthentication(security.getAdminUser(), security.getAdminPassword()));
         }
 
