@@ -19,6 +19,7 @@ package org.ehrbase.fhirbridge.camel.route;
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 import org.apache.camel.builder.RouteBuilder;
 import org.ehrbase.fhirbridge.camel.CamelConstants;
+import org.ehrbase.fhirbridge.config.SearchProperties;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.AntiBodyPanelConverter;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.BloodGasPanelConverter;
 import org.ehrbase.fhirbridge.fhir.bundle.converter.DiagnosticReportLabConverter;
@@ -40,6 +41,10 @@ public class BundleRoutes extends AbstractRouteBuilder {
 
     private final String CONVERT = "convert";
     private final String BUNDLE_RESPONSE_PROCESSOR = "bundleResponseProcessor";
+
+    public BundleRoutes(SearchProperties properties) {
+        super(properties);
+    }
 
     @Override
     public void configure() throws Exception {

@@ -27,6 +27,7 @@ fhir-bridge:
     template:
       prefix: classpath:/opt/
       force-update: false
+  search: openehr
 # FHIR Properties
 #  fhir:
 #    jpa:

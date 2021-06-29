@@ -17,6 +17,7 @@
 package org.ehrbase.fhirbridge.camel.route;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.ehrbase.fhirbridge.config.SearchProperties;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class QuestionnaireResponseRoutes extends AbstractRouteBuilder {
+
+    public QuestionnaireResponseRoutes(SearchProperties properties) {
+        super(properties);
+    }
 
     @Override
     public void configure() throws Exception {

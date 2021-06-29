@@ -16,6 +16,7 @@
 
 package org.ehrbase.fhirbridge.camel.route;
 
+import org.ehrbase.fhirbridge.config.SearchProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +27,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MedicationStatementRoutes extends AbstractRouteBuilder {
+
+    public MedicationStatementRoutes(SearchProperties properties) {
+        super(properties);
+    }
 
     @Override
     public void configure() throws Exception {

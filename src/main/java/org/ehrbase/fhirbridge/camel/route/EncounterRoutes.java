@@ -3,11 +3,12 @@ package org.ehrbase.fhirbridge.camel.route;
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 import org.apache.camel.builder.RouteBuilder;
 import org.ehrbase.fhirbridge.camel.CamelConstants;
+import org.ehrbase.fhirbridge.config.SearchProperties;
+import org.ehrbase.fhirbridge.ehr.converter.ConversionException;
 import org.ehrbase.fhirbridge.fhir.common.Profile;
 import org.ehrbase.fhirbridge.fhir.support.Encounters;
 import org.hl7.fhir.r4.model.Encounter;
 import org.springframework.stereotype.Component;
-import org.ehrbase.fhirbridge.ehr.converter.ConversionException;
 
 /**
  * Implementation of {@link RouteBuilder} that provides route definitions for transactions
@@ -17,6 +18,10 @@ import org.ehrbase.fhirbridge.ehr.converter.ConversionException;
  */
 @Component
 public class EncounterRoutes extends AbstractRouteBuilder {
+
+    public EncounterRoutes(SearchProperties properties) {
+        super(properties);
+    }
 
     @Override
     public void configure() throws Exception {
