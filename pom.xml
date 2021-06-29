@@ -23,6 +23,7 @@
         <surefire.version>2.22.2</surefire.version>
         <jacoco.version>0.8.5</jacoco.version>
         <!-- Dependencies -->
+        <camel-openehr.version>main-SNAPSHOT</camel-openehr.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-text.version>1.9</commons-text.version>
@@ -289,9 +290,9 @@
             <artifactId>h2</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
+            <groupId>com.github.ehrbase.camel-openehr</groupId>
             <artifactId>camel-openehr-aql</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${camel-openehr.version}</version>
         </dependency>
         <!-- Test Dependencies-->
         <dependency>
