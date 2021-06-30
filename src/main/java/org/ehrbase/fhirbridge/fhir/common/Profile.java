@@ -3,13 +3,14 @@ package org.ehrbase.fhirbridge.fhir.common;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Consent;
 import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.Encounter;
+import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.Encounter;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -40,6 +41,9 @@ public enum Profile {
     DIAGNOSE_COMPLICATIONS_COVID_19(Condition.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/complications-covid-19"),
     DIAGNOSE_DEPENDENCE_ON_VENTILATOR(Condition.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/dependence-on-ventilator"),
 
+    // Immunization Profiles
+
+    HISTORY_OF_VACCINATION(Immunization.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/immunization"),
     // Consent Profiles
 
     DO_NOT_RESUSCITATE_ORDER(Consent.class, "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/do-not-resuscitate-order"),

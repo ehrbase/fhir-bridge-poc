@@ -4,18 +4,23 @@ import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Consent;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 
 public class TimeConverter {
+    private static final Logger LOG = LoggerFactory.getLogger(TimeConverter.class);
 
     private TimeConverter() {
         throw new IllegalStateException("Utility class");
@@ -107,6 +112,15 @@ public class TimeConverter {
         }
     }
 
+    public static TemporalAccessor convertImmunizationTime(Immunization immunization) {
+        if (immunization.hasOccurrenceDateTimeType() && !immunization.getOccurrenceDateTimeType().hasExtension()) {
+            return immunization.getOccurrenceDateTimeType().getValueAsCalendar().toZonedDateTime();
+        } else {
+            LOG.warn("No occurrence Date Time was given, as default the current time is now taken. This date time should better be added to the resource");
+            return ZonedDateTime.now();
+        }
+    }
+
     public static TemporalAccessor convertMedicationStatmentTime(MedicationStatement medicationStatement){
         if (medicationStatement.hasEffectiveDateTimeType()) { // EffectiveDateTime
             return medicationStatement.getEffectiveDateTimeType().getValueAsCalendar().toZonedDateTime();
@@ -144,7 +158,7 @@ public class TimeConverter {
         DateTimeType dateTimeOfDocumentationDt = (DateTimeType) dataTimeOfDocumentationExtension.getValue();
         return dateTimeOfDocumentationDt.getValueAsCalendar().toZonedDateTime();
     }
-    
+
     public static TemporalAccessor convertEncounterTime(Encounter encounter) {
         return OffsetDateTime.from(encounter.getPeriod().getStartElement().getValueAsCalendar().toZonedDateTime());
     }

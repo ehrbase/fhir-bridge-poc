@@ -52,13 +52,9 @@ public class EhrbaseProperties {
 
         private AuthorizationType type;
 
-        private String user;
+        private final User user = new User();
 
-        private String password;
-
-        private String adminUser;
-
-        private String adminPassword;
+        private final OAuth2 oAuth2 = new OAuth2();
 
         public AuthorizationType getType() {
             return type;
@@ -68,36 +64,12 @@ public class EhrbaseProperties {
             this.type = type;
         }
 
-        public String getUser() {
+        public User getUser() {
             return user;
         }
 
-        public void setUser(String user) {
-            this.user = user;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getAdminUser() {
-            return adminUser;
-        }
-
-        public void setAdminUser(String adminUser) {
-            this.adminUser = adminUser;
-        }
-
-        public String getAdminPassword() {
-            return adminPassword;
-        }
-
-        public void setAdminPassword(String adminPassword) {
-            this.adminPassword = adminPassword;
+        public OAuth2 getOAuth2() {
+            return oAuth2;
         }
     }
 
@@ -124,8 +96,85 @@ public class EhrbaseProperties {
         }
     }
 
+    public static class User {
+
+        private String name;
+
+        private String password;
+
+        private String adminName;
+
+        private String adminPassword;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getAdminName() {
+            return adminName;
+        }
+
+        public void setAdminName(String adminName) {
+            this.adminName = adminName;
+        }
+
+        public String getAdminPassword() {
+            return adminPassword;
+        }
+
+        public void setAdminPassword(String adminPassword) {
+            this.adminPassword = adminPassword;
+        }
+    }
+
+
+    public static class OAuth2 {
+
+        private String tokenUrl;
+
+        private String clientId;
+
+        private String clientSecret;
+
+        public String getTokenUrl() {
+            return tokenUrl;
+        }
+
+        public void setTokenUrl(String tokenUrl) {
+            this.tokenUrl = tokenUrl;
+        }
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public void setClientId(String clientId) {
+            this.clientId = clientId;
+        }
+
+        public String getClientSecret() {
+            return clientSecret;
+        }
+
+        public void setClientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+        }
+    }
+
     public enum AuthorizationType {
 
-        BASIC, NONE
+        NONE, BASIC, OAUTH2
     }
 }

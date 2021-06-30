@@ -29,7 +29,6 @@ public class D4lQuestionnaireCompositionConverter extends QuestionnaireResponseT
     @Override
     public D4LQuestionnaireComposition convertInternal(@NonNull QuestionnaireResponse resource) {
         D4LQuestionnaireComposition d4LQuestionnaireComposition = new D4LQuestionnaireComposition();
-        //TODO Renaud can´t think of another solution than this bad one maybe you have another idea ?, the language and time are both only contained within the response "main" and need to be given to the specific converters.
         Language language = resolveLanguageOrDefault(resource);
         TemporalAccessor authored = super.getStartTime(resource);
         initialiseSections(language, authored);

@@ -1,0 +1,172 @@
+{
+  "_type" : "COMPOSITION",
+  "name" : {
+    "_type" : "DV_TEXT",
+    "value" : "Impfstatus"
+  },
+  "archetype_details" : {
+    "archetype_id" : {
+      "value" : "openEHR-EHR-COMPOSITION.registereintrag.v1"
+    },
+    "template_id" : {
+      "value" : "Impfstatus"
+    },
+    "rm_version" : "1.0.4"
+  },
+  "feeder_audit" : {
+    "_type" : "FEEDER_AUDIT",
+    "originating_system_item_ids" : [ {
+      "_type" : "DV_IDENTIFIER",
+      "id" : "Immunization/5/_history/1",
+      "type" : "fhir_logical_id"
+    } ],
+    "originating_system_audit" : {
+      "_type" : "FEEDER_AUDIT_DETAILS",
+      "system_id" : "FHIR-Bridge"
+    }
+  },
+  "language" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_639-1"
+    },
+    "code_string" : "de"
+  },
+  "territory" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_3166-1"
+    },
+    "code_string" : "DE"
+  },
+  "category" : {
+    "_type" : "DV_CODED_TEXT",
+    "value" : "event",
+    "defining_code" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "openehr"
+      },
+      "code_string" : "433"
+    }
+  },
+  "composer" : {
+    "_type" : "PARTY_SELF"
+  },
+  "context" : {
+    "_type" : "EVENT_CONTEXT",
+    "start_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2020-12-27T00:00:00+01:00"
+    },
+    "setting" : {
+      "_type" : "DV_CODED_TEXT",
+      "value" : "secondary medical care",
+      "defining_code" : {
+        "_type" : "CODE_PHRASE",
+        "terminology_id" : {
+          "_type" : "TERMINOLOGY_ID",
+          "value" : "openehr"
+        },
+        "code_string" : "232"
+      }
+    }
+  },
+  "content" : [ {
+    "_type" : "ACTION",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Impfung"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2020-12-27T00:00:00+01:00"
+    },
+    "description" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Tree"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Impfstoff"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Vaccine product containing only Severe acute respiratory syndrome coronavirus 2 messenger ribonucleic acid (medicinal product)",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "SNOMED Clinical Terms"
+            },
+            "code_string" : "1119349007"
+          }
+        },
+        "archetype_node_id" : "at0020"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Impfung gegen"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Disease caused by Severe acute respiratory syndrome coronavirus 2 (disorder)",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "SNOMED Clinical Terms"
+            },
+            "code_string" : "840539006"
+          }
+        },
+        "archetype_node_id" : "at0021"
+      } ],
+      "archetype_node_id" : "at0017"
+    },
+    "ism_transition" : {
+      "_type" : "ISM_TRANSITION",
+      "current_state" : {
+        "_type" : "DV_CODED_TEXT",
+        "value" : "completed",
+        "defining_code" : {
+          "_type" : "CODE_PHRASE",
+          "terminology_id" : {
+            "_type" : "TERMINOLOGY_ID",
+            "value" : "openehr"
+          },
+          "code_string" : "532"
+        }
+      }
+    },
+    "archetype_node_id" : "openEHR-EHR-ACTION.medication.v1"
+  } ],
+  "archetype_node_id" : "openEHR-EHR-COMPOSITION.registereintrag.v1"
+}

@@ -52,29 +52,29 @@ import javax.servlet.http.HttpServletResponse;
 public class FindMedicationStatementProvider extends AbstractPlainProvider {
 
     @Search(type = MedicationStatement.class)
-    public IBundleProvider searchMedicationStatement(@OptionalParam(name = IAnyResource.SP_RES_ID) TokenAndListParam id,
-                                                     @OptionalParam(name = IAnyResource.SP_RES_LANGUAGE) StringAndListParam language,
-                                                     @OptionalParam(name = Constants.PARAM_LASTUPDATED) DateRangeParam lastUpdated,
-                                                     @OptionalParam(name = Constants.PARAM_PROFILE) UriAndListParam profile,
-                                                     @OptionalParam(name = Constants.PARAM_SOURCE) UriAndListParam resourceSource,
-                                                     @OptionalParam(name = Constants.PARAM_SECURITY) TokenAndListParam security,
-                                                     @OptionalParam(name = Constants.PARAM_TAG) TokenAndListParam tag,
-                                                     @OptionalParam(name = Constants.PARAM_CONTENT) StringAndListParam content,
-                                                     @OptionalParam(name = Constants.PARAM_TEXT) StringAndListParam text,
-                                                     @OptionalParam(name = Constants.PARAM_FILTER) StringAndListParam filter,
-                                                     @OptionalParam(name = MedicationStatement.SP_CATEGORY) TokenAndListParam category,
-                                                     @OptionalParam(name = MedicationStatement.SP_CODE) TokenAndListParam code,
-                                                     @OptionalParam(name = MedicationStatement.SP_CONTEXT) ReferenceAndListParam context,
-                                                     @OptionalParam(name = MedicationStatement.SP_EFFECTIVE) DateRangeParam effective,
-                                                     @OptionalParam(name = MedicationStatement.SP_IDENTIFIER) TokenAndListParam identifier,
-                                                     @OptionalParam(name = MedicationStatement.SP_MEDICATION) ReferenceAndListParam medication,
-                                                     @OptionalParam(name = MedicationStatement.SP_PART_OF) ReferenceAndListParam partOf,
-                                                     @OptionalParam(name = MedicationStatement.SP_PATIENT) ReferenceAndListParam patient,
-                                                     @OptionalParam(name = MedicationStatement.SP_SOURCE) ReferenceAndListParam source,
-                                                     @OptionalParam(name = MedicationStatement.SP_STATUS) TokenAndListParam status,
-                                                     @OptionalParam(name = MedicationStatement.SP_SUBJECT) ReferenceAndListParam subject,
-                                                     @Count Integer count, @Offset Integer offset, @Sort SortSpec sort,
-                                                     RequestDetails requestDetails, HttpServletRequest request, HttpServletResponse response) {
+    public IBundleProvider search(@OptionalParam(name = IAnyResource.SP_RES_ID) TokenAndListParam id,
+                                  @OptionalParam(name = IAnyResource.SP_RES_LANGUAGE) StringAndListParam language,
+                                  @OptionalParam(name = Constants.PARAM_LASTUPDATED) DateRangeParam lastUpdated,
+                                  @OptionalParam(name = Constants.PARAM_PROFILE) UriAndListParam profile,
+                                  @OptionalParam(name = Constants.PARAM_SOURCE) UriAndListParam resourceSource,
+                                  @OptionalParam(name = Constants.PARAM_SECURITY) TokenAndListParam security,
+                                  @OptionalParam(name = Constants.PARAM_TAG) TokenAndListParam tag,
+                                  @OptionalParam(name = Constants.PARAM_CONTENT) StringAndListParam content,
+                                  @OptionalParam(name = Constants.PARAM_TEXT) StringAndListParam text,
+                                  @OptionalParam(name = Constants.PARAM_FILTER) StringAndListParam filter,
+                                  @OptionalParam(name = MedicationStatement.SP_CATEGORY) TokenAndListParam category,
+                                  @OptionalParam(name = MedicationStatement.SP_CODE) TokenAndListParam code,
+                                  @OptionalParam(name = MedicationStatement.SP_CONTEXT) ReferenceAndListParam context,
+                                  @OptionalParam(name = MedicationStatement.SP_EFFECTIVE) DateRangeParam effective,
+                                  @OptionalParam(name = MedicationStatement.SP_IDENTIFIER) TokenAndListParam identifier,
+                                  @OptionalParam(name = MedicationStatement.SP_MEDICATION) ReferenceAndListParam medication,
+                                  @OptionalParam(name = MedicationStatement.SP_PART_OF) ReferenceAndListParam partOf,
+                                  @OptionalParam(name = MedicationStatement.SP_PATIENT) ReferenceAndListParam patient,
+                                  @OptionalParam(name = MedicationStatement.SP_SOURCE) ReferenceAndListParam source,
+                                  @OptionalParam(name = MedicationStatement.SP_STATUS) TokenAndListParam status,
+                                  @OptionalParam(name = MedicationStatement.SP_SUBJECT) ReferenceAndListParam subject,
+                                  @Count Integer count, @Offset Integer offset, @Sort SortSpec sort,
+                                  RequestDetails requestDetails, HttpServletRequest request, HttpServletResponse response) {
 
         SearchParameterMap searchParams = new SearchParameterMap();
         searchParams.add(IAnyResource.SP_RES_ID, id);
@@ -109,8 +109,8 @@ public class FindMedicationStatementProvider extends AbstractPlainProvider {
     }
 
     @Read(version = true)
-    public MedicationStatement readMedicationStatement(@IdParam IdType id, RequestDetails requestDetails,
-                                                       HttpServletRequest request, HttpServletResponse response) {
+    public MedicationStatement read(@IdParam IdType id, RequestDetails requestDetails,
+                                    HttpServletRequest request, HttpServletResponse response) {
         return requestResource(id, null, MedicationStatement.class, request, response, requestDetails);
     }
 }

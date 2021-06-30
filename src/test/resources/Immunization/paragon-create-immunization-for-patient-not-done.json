@@ -1,0 +1,134 @@
+{
+  "_type" : "COMPOSITION",
+  "name" : {
+    "_type" : "DV_TEXT",
+    "value" : "Impfstatus"
+  },
+  "archetype_details" : {
+    "archetype_id" : {
+      "value" : "openEHR-EHR-COMPOSITION.registereintrag.v1"
+    },
+    "template_id" : {
+      "value" : "Impfstatus"
+    },
+    "rm_version" : "1.0.4"
+  },
+  "feeder_audit" : {
+    "_type" : "FEEDER_AUDIT",
+    "originating_system_item_ids" : [ {
+      "_type" : "DV_IDENTIFIER",
+      "id" : "Immunization/11/_history/1",
+      "type" : "fhir_logical_id"
+    } ],
+    "originating_system_audit" : {
+      "_type" : "FEEDER_AUDIT_DETAILS",
+      "system_id" : "FHIR-Bridge"
+    }
+  },
+  "language" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_639-1"
+    },
+    "code_string" : "de"
+  },
+  "territory" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_3166-1"
+    },
+    "code_string" : "DE"
+  },
+  "category" : {
+    "_type" : "DV_CODED_TEXT",
+    "value" : "event",
+    "defining_code" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "openehr"
+      },
+      "code_string" : "433"
+    }
+  },
+  "composer" : {
+    "_type" : "PARTY_SELF"
+  },
+  "context" : {
+    "_type" : "EVENT_CONTEXT",
+    "start_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2021-06-30T12:46:34,307538+02:00"
+    },
+    "setting" : {
+      "_type" : "DV_CODED_TEXT",
+      "value" : "secondary medical care",
+      "defining_code" : {
+        "_type" : "CODE_PHRASE",
+        "terminology_id" : {
+          "_type" : "TERMINOLOGY_ID",
+          "value" : "openehr"
+        },
+        "code_string" : "232"
+      }
+    }
+  },
+  "content" : [ {
+    "_type" : "EVALUATION",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Unbekannter Impfstatus"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "data" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Baum"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aussage über Abwesenheit"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "No known immunizations",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "HL7 NoImmunizationInfoUvIps"
+            },
+            "code_string" : "no-known-immunizations"
+          }
+        },
+        "archetype_node_id" : "at0002"
+      } ],
+      "archetype_node_id" : "at0001"
+    },
+    "archetype_node_id" : "openEHR-EHR-EVALUATION.absence.v2"
+  } ],
+  "archetype_node_id" : "openEHR-EHR-COMPOSITION.registereintrag.v1"
+}

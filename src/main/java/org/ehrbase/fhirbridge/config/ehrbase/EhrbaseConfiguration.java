@@ -26,10 +26,11 @@ import org.ehrbase.client.openehrclient.OpenEhrClientConfig;
 import org.ehrbase.client.openehrclient.defaultrestclient.DefaultRestClient;
 import org.ehrbase.fhirbridge.ehr.ResourceTemplateProvider;
 import org.ehrbase.webtemplate.templateprovider.TemplateProvider;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,7 +42,7 @@ import java.net.URISyntaxException;
  */
 @Configuration
 @EnableConfigurationProperties(EhrbaseProperties.class)
-@Import(EhrbaseTemplateInitializer.class)
+@SuppressWarnings("java:S6212")
 public class EhrbaseConfiguration {
 
     private final EhrbaseProperties properties;
@@ -56,25 +57,45 @@ public class EhrbaseConfiguration {
     }
 
     @Bean
-    public TemplateProvider templateProvider() {
+    public ResourceTemplateProvider templateProvider() {
         return new ResourceTemplateProvider(properties.getTemplate().getPrefix());
     }
 
     @Bean
-    public DefaultRestClient openEhrClient(OpenEhrClientConfig restClientConfig, TemplateProvider templateProvider) {
-        return new DefaultRestClient(restClientConfig, templateProvider, httpClient());
+    public DefaultRestClient openEhrClient(OpenEhrClientConfig restClientConfig,
+                                           TemplateProvider templateProvider,
+                                           HttpClient ehrbaseHttpClient) {
+        return new DefaultRestClient(restClientConfig, templateProvider, ehrbaseHttpClient);
     }
 
-    private HttpClient httpClient() {
-        var builder = HttpClientBuilder.create();
+    @Bean
+    public HttpClient ehrbaseHttpClient(ObjectProvider<AccessTokenService> accessTokenService) {
+        HttpClientBuilder builder = HttpClientBuilder.create();
 
         EhrbaseProperties.Security security = properties.getSecurity();
         if (security.getType() == EhrbaseProperties.AuthorizationType.BASIC) {
             CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(security.getUser(), security.getPassword()));
+            EhrbaseProperties.User user = security.getUser();
+            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user.getName(), user.getPassword()));
             builder.setDefaultCredentialsProvider(credentialsProvider);
+        } else if (security.getType() == EhrbaseProperties.AuthorizationType.OAUTH2) {
+            builder.addInterceptorFirst(new TokenAuthenticationInterceptor(accessTokenService.getIfAvailable()));
         }
 
         return builder.build();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "fhir-bridge.ehrbase.security.type", havingValue = "oauth2")
+    public AccessTokenService accessTokenService() {
+        EhrbaseProperties.OAuth2 oauth2 = properties.getSecurity().getOAuth2();
+        return new AccessTokenService(oauth2.getTokenUrl(), oauth2.getClientId(), oauth2.getClientSecret());
+    }
+
+    @Bean
+    public EhrbaseTemplateInitializer templateInitializer(ResourceTemplateProvider templateProvider,
+                                                          DefaultRestClient openEhrClient,
+                                                          ObjectProvider<AccessTokenService> accessTokenService) {
+        return new EhrbaseTemplateInitializer(properties, templateProvider, openEhrClient, accessTokenService.getIfAvailable());
     }
 }

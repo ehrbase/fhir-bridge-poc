@@ -1,0 +1,46 @@
+version: '3'
+services:
+  keycloak:
+    image: jboss/keycloak
+    ports:
+      - 8081:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/ehrbase-realm.json
+      DB_VENDOR: H2
+    volumes:
+      - ./keycloak/ehrbase-realm.json:/tmp/ehrbase-realm.json
+    networks:
+      - ehrbase-network
+  ehrbase-db:
+    image: ehrbase/ehrbase-postgres:latest
+    ports:
+      - 5432:5432
+    networks:
+      - ehrbase-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      EHRBASE_USER: ehrbase
+      EHRBASE_PASSWORD: ehrbase
+#  ehrbase:
+#    image: ehrbase/ehrbase:next
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - ehrbase-network
+#    environment:
+#      DB_URL: jdbc:postgresql://ehrbase-db:5432/ehrbase
+#      DB_USER: ehrbase
+#      DB_PASS: ehrbase
+#      SECURITY_AUTHTYPE: OAUTH
+#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: http://keycloak:8080/auth/realms/ehrbase
+#      SYSTEM_NAME: local.ehrbase.org
+#      ADMIN_API_ACTIVE: 'true'
+#    depends_on:
+#      - keycloak
+#      - ehrbase-db
+#    restart: on-failure
+networks:
+  ehrbase-network: { }

@@ -41,6 +41,7 @@ import org.hl7.fhir.r4.model.Device;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Encounter;
 import org.hl7.fhir.r4.model.Group;
+import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Location;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Observation;
@@ -137,6 +138,14 @@ public class HapiFhirJpaConfiguration extends BaseR4Config {
         groupDao.setResourceType(Group.class);
         groupDao.setContext(fhirContext());
         return groupDao;
+    }
+
+    @Bean
+    public IFhirResourceDao<Immunization> immunizationDao() {
+        JpaResourceDao<Immunization> resourceDao = new JpaResourceDao<>();
+        resourceDao.setResourceType(Immunization.class);
+        resourceDao.setContext(fhirContext());
+        return resourceDao;
     }
 
     @Bean

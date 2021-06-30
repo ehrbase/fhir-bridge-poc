@@ -14,7 +14,11 @@
     ]
   },
   "patient": {
-    "reference": "Patient/c786ac3c-0579-4aa2-adda-db784b214ad6"
+    "reference": "Patient/c786ac3c-0579-4aa2-adda-db784b214ad6",
+    "identifier": {
+      "system": "urn:ietf:rfc:4122",
+      "value": "{{patientId}}"
+    }
   },
   "status": "not-done",
   "vaccineCode": {

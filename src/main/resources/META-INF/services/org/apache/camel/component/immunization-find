@@ -1,0 +1,1 @@
+class=org.ehrbase.fhirbridge.camel.component.fhir.immunization.FindImmunizationComponent

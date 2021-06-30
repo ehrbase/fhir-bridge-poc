@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
@@ -37,6 +38,7 @@ import java.util.Optional;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("java:S6212")
 public class EhrbaseTemplateInitializer implements InitializingBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(EhrbaseTemplateInitializer.class);
@@ -47,12 +49,15 @@ public class EhrbaseTemplateInitializer implements InitializingBean {
 
     private final OpenEhrClient openEhrClient;
 
+    private final AccessTokenService accessTokenService;
+
     private final WebClient webClient;
 
-    public EhrbaseTemplateInitializer(EhrbaseProperties properties, ResourceTemplateProvider templateProvider, OpenEhrClient openEhrClient) {
+    public EhrbaseTemplateInitializer(EhrbaseProperties properties, ResourceTemplateProvider templateProvider, OpenEhrClient openEhrClient, AccessTokenService accessTokenService) {
         this.properties = properties;
         this.templateProvider = templateProvider;
         this.openEhrClient = openEhrClient;
+        this.accessTokenService = accessTokenService;
         this.webClient = adminWebClient();
     }
 
@@ -108,7 +113,12 @@ public class EhrbaseTemplateInitializer implements InitializingBean {
 
         var security = properties.getSecurity();
         if (security.getType() == EhrbaseProperties.AuthorizationType.BASIC) {
-            webClientBuilder.filter(ExchangeFilterFunctions.basicAuthentication(security.getAdminUser(), security.getAdminPassword()));
+            EhrbaseProperties.User user = properties.getSecurity().getUser();
+            webClientBuilder.filter(ExchangeFilterFunctions.basicAuthentication(user.getAdminName(), user.getAdminPassword()));
+        } else if (security.getType() == EhrbaseProperties.AuthorizationType.OAUTH2) {
+            webClientBuilder.filter((request, next) -> next.exchange(ClientRequest.from(request)
+                    .headers(headers -> headers.setBearerAuth(accessTokenService.getToken()))
+                    .build()));
         }
 
         return webClientBuilder.build();

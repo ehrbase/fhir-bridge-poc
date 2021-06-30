@@ -14,7 +14,6 @@ public class HerzfrequenzObservationConverter extends ObservationToObservationCo
     protected HerzfrequenzObservation convertInternal(Observation resource) {
         HerzfrequenzObservation herzfrequenzObservation = new HerzfrequenzObservation();
         try {
-            //TODO refactor time values
             herzfrequenzObservation.setFrequenzMagnitude(resource.getValueQuantity().getValue().doubleValue());
             herzfrequenzObservation.setFrequenzUnits(resource.getValueQuantity().getCode());//note that the textual value that openEHR template expects as unit is stored in code for this entity
         } catch (Exception e) {

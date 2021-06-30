@@ -7,6 +7,7 @@ import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Consent;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Encounter;
+import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.PrimitiveType;
@@ -57,6 +58,8 @@ public class Resources {
                 return getSubject((DiagnosticReport) resource);
             case Encounter:
                 return getSubject((Encounter) resource);
+            case Immunization:
+                    return getSubject((Immunization) resource);
             case MedicationStatement:
                 return getSubject((MedicationStatement) resource);
             case Observation:
@@ -76,6 +79,10 @@ public class Resources {
 
     public static Optional<Reference> getSubject(Consent consent) {
         return consent.hasPatient() ? Optional.of(consent.getPatient()) : Optional.empty();
+    }
+
+    public static Optional<Reference> getSubject(Immunization immunization) {
+        return immunization.hasPatient() ? Optional.of(immunization.getPatient()) : Optional.empty();
     }
 
     public static Optional<Reference> getSubject(DiagnosticReport diagnosticReport) {

@@ -1,0 +1,50 @@
+{
+  "resourceType": "Immunization",
+  "id": "c17f192c-f765-4729-818a-4ee55be5c87b",
+  "meta": {
+    "profile":  [
+      "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/immunization"
+    ]
+  },
+  "status": "completed",
+  "vaccineCode": {
+    "coding":  [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "1119349007",
+        "display": "Vaccine product containing only Severe acute respiratory syndrome coronavirus 2 messenger ribonucleic acid (medicinal product)"
+      }
+    ]
+  },
+  "patient": {
+    "reference": "Patient/21acfc9c-1fd6-43e6-a8fe-c6b6341b0fab",
+    "identifier": {
+      "system": "urn:ietf:rfc:4122",
+      "value": "{{patientId}}"
+    }
+  },
+  "occurrenceDateTime": "2020-12-27",
+  "protocolApplied":  [
+    {
+      "targetDisease":  [
+        {
+          "coding":  [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "840539006",
+              "display": "Disease caused by Severe acute respiratory syndrome coronavirus 2 (disorder)"
+            }
+          ]
+        }
+      ],
+      "_doseNumberString": {
+        "extension":  [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          }
+        ]
+      }
+    }
+  ]
+}

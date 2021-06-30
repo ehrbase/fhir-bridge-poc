@@ -18,6 +18,7 @@ import org.ehrbase.fhirbridge.ehr.converter.specific.fio2.FiO2CompositionConvert
 import org.ehrbase.fhirbridge.ehr.converter.specific.geccoDiagnose.GECCODiagnoseCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.heartrate.HeartRateCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.historyoftravel.HistoryOfTravelCompositionConverter;
+import org.ehrbase.fhirbridge.ehr.converter.specific.impfstatus.ImpfstatusCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.knownexposure.SarsCov2KnownExposureCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.medication.GECCOMedikationCompositionConverter;
 import org.ehrbase.fhirbridge.ehr.converter.specific.observationlab.ObservationLabCompositionConverter;
@@ -56,6 +57,7 @@ public class ConversionConfiguration {
         registerQuestionnaireResponseConverter(conversionService);
         registerMedicationStatementConverter(conversionService);
         registerEncounterConverter(conversionService);
+        registerImmunizationConverters(conversionService);
 
         return conversionService;
     }
@@ -146,5 +148,9 @@ public class ConversionConfiguration {
     private void registerEncounterConverter(ConversionService conversionService) {
         conversionService.registerConverter(Profile.KONTAKT_GESUNDHEIT_EINRICHTUNG, new StationaererVersorgungsfallCompositionConverter());
         conversionService.registerConverter(Profile.KONTAKT_GESUNDHEIT_ABTEILUNG, new PatientenAufenthaltCompositionConverter());
+    }
+
+    private void registerImmunizationConverters(ConversionService conversionService) {
+        conversionService.registerConverter(Profile.HISTORY_OF_VACCINATION, new ImpfstatusCompositionConverter());
     }
 }

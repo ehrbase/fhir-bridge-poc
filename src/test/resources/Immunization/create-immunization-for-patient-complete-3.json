@@ -1,0 +1,50 @@
+{
+  "resourceType": "Immunization",
+  "id": "85bd2fab-256b-43d6-9671-4f97c1407d0f",
+  "meta": {
+    "profile":  [
+      "https://www.netzwerk-universitaetsmedizin.de/fhir/StructureDefinition/immunization"
+    ]
+  },
+  "status": "completed",
+  "vaccineCode": {
+    "coding":  [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "333598008",
+        "display": "Pneumococcal vaccine"
+      }
+    ]
+  },
+  "patient": {
+    "reference": "Patient/c786ac3c-0579-4aa2-adda-db784b214ad6",
+    "identifier": {
+      "system": "urn:ietf:rfc:4122",
+      "value": "{{patientId}}"
+    }
+  },
+  "occurrenceDateTime": "2020-10-06",
+  "protocolApplied":  [
+    {
+      "targetDisease":  [
+        {
+          "coding":  [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "16814004",
+              "display": "Pneumococcal infectious disease"
+            }
+          ]
+        }
+      ],
+      "_doseNumberString": {
+        "extension":  [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          }
+        ]
+      }
+    }
+  ]
+}
