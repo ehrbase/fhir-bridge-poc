@@ -28,10 +28,16 @@ import org.ehrbase.fhirbridge.config.SearchProperties;
 import org.ehrbase.fhirbridge.ehr.opt.geccolaborbefundcomposition.GECCOLaborbefundComposition;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.reflections.Reflections;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.Map;
 
 /**
  * Implementation of {@link RouteBuilder} that provides route definitions for transactions
@@ -77,8 +83,11 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                     .process("findDiagnosticReportProcessor")
                 .otherwise()
                     .to("direct:search-using-ehrbase");
+                    //.process("findDiagnosticReportProcessorOpenehr"); // need to implement a new method in ProcessorConfiguration and class to return from that
+
 
         from("direct:search-using-ehrbase")
+                /*
             .setHeader(AqlConstants.AQL_QUERY, () -> Query.buildNativeQuery(
                 "SELECT c " +
                       "FROM EHR e CONTAINS COMPOSITION c " +
@@ -94,7 +103,69 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                 return new ParameterValue<>("value", value);
             })
             .to("openehr-aql:endpoint")
+                */
             .process(exchange -> {
+
+                // TEST: get all enums from opt
+                Reflections reflections = new Reflections("org.ehrbase.fhirbridge.ehr.opt");
+                Set<Class<? extends Enum>> enumClasses = reflections.getSubTypesOf(Enum.class);
+                //System.out.println(enumClasses);
+
+                for (Class<? extends Enum> enumClass: enumClasses) {
+
+                    if (!enumClass.isEnum()) {
+                        continue;
+                    }
+
+                    System.out.println(enumClass.getSimpleName());
+
+                    if (!enumClass.getSimpleName().equals("UntersuchterAnalytDefiningCode")) {
+                        continue;
+                    }
+
+
+                    System.out.println(enumClass.getPackageName());
+                    //System.out.println(enumClass.getClass().getEnumConstants()); // null
+
+
+                    System.out.println("getCode");
+                    for (Object econt : enumClass.getEnumConstants()) {
+                        Method methodToFind = null;
+                        try {
+                            methodToFind = econt.getClass().getMethod("getCode", (Class<?>[]) null);
+                            // econt.getCode(), no parameters
+                            String code = (String)methodToFind.invoke(econt, (Object[]) null);
+
+                            System.out.println(code);
+
+                        } catch (NoSuchMethodException | SecurityException e) {
+                            System.out.println("ups 1");
+                        }
+                    }
+
+
+
+
+                    System.out.println("getNames");
+                    String[] names = getNames(enumClass);
+
+                    for (String name : names) {
+                        System.out.println(name);
+                    }
+
+
+                    // correct enum values as string
+                    System.out.println("enumClass.getFields()");
+                    for (Field f : enumClass.getFields()) {
+                        if (f.isEnumConstant()) {
+                            System.out.println(f.getName());
+                        }
+                    }
+
+
+                    System.out.println("");
+                }
+
                 // TODO: map result into FHIR Resource
                 Record[] records = exchange.getIn().getBody(Record[].class);
 
@@ -104,6 +175,11 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                 }
                 exchange.getMessage().setBody(result);
             });
+
         // @formatter:on
+    }
+
+    private static String[] getNames(Class<? extends Enum> e) {
+        return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
     }
 }

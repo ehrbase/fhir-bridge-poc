@@ -97,6 +97,13 @@ public class ProcessorConfiguration {
         return new FindResourceProcessor<>(diagnosticReportDao);
     }
 
+    /*
+    @Bean
+    public FindResourceProcessorOpenehr<DiagnosticReport> findDiagnosticReportProcessorOpenehr(IFhirResourceDao<DiagnosticReport> diagnosticReportDao) {
+        return new FindResourceProcessor<>(diagnosticReportDao);
+    }
+    */
+
     @Bean
     public FindResourceProcessor<Encounter> findEncounterProcessor(IFhirResourceDao<Encounter> encounterDao) {
         return new FindResourceProcessor<>(encounterDao);
