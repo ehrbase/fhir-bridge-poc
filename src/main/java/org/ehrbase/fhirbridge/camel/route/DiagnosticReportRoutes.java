@@ -21,9 +21,11 @@ import ca.uhn.fhir.jpa.searchparam.SearchParameterMap;
 import ca.uhn.fhir.model.api.IQueryParameterType;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.openehr.aql.AqlConstants;
+import org.ehrbase.client.annotations.Template;
 import org.ehrbase.client.aql.parameter.ParameterValue;
 import org.ehrbase.client.aql.query.Query;
 import org.ehrbase.client.aql.record.Record;
+import org.ehrbase.client.classgenerator.interfaces.CompositionEntity;
 import org.ehrbase.fhirbridge.config.SearchProperties;
 import org.ehrbase.fhirbridge.ehr.opt.geccolaborbefundcomposition.GECCOLaborbefundComposition;
 import org.hl7.fhir.instance.model.api.IBaseResource;
@@ -111,13 +113,15 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                 Set<Class<? extends Enum>> enumClasses = reflections.getSubTypesOf(Enum.class);
                 //System.out.println(enumClasses);
 
+                String foundPackage;
+
                 for (Class<? extends Enum> enumClass: enumClasses) {
 
                     if (!enumClass.isEnum()) {
                         continue;
                     }
 
-                    System.out.println(enumClass.getSimpleName());
+                    //System.out.println(enumClass.getSimpleName());
 
                     if (!enumClass.getSimpleName().equals("UntersuchterAnalytDefiningCode")) {
                         continue;
@@ -133,19 +137,46 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                         Method methodToFind = null;
                         try {
                             methodToFind = econt.getClass().getMethod("getCode", (Class<?>[]) null);
+
                             // econt.getCode(), no parameters
                             String code = (String)methodToFind.invoke(econt, (Object[]) null);
 
-                            System.out.println(code);
+                            System.out.println(code); // this should be used for code matching
+
+                            // when the code matches, we need the package where the enum is defined
+                            // then remove the '.definition' from the package
+                            // then in that package search for the class that implements CompositionEntity
+                            // on that class, get the @Template anotation
+                            // the value of the annotation will be the template we are looking for
 
                         } catch (NoSuchMethodException | SecurityException e) {
-                            System.out.println("ups 1");
+                            System.out.println("oops 1");
                         }
                     }
 
+                    // code for processing the found package
+
+                    // get parent package
+                    foundPackage = enumClass.getPackageName(); // org.ehrbase.fhirbridge.ehr.opt.xxx.definition
+                    int lastIndex = foundPackage.lastIndexOf(".");
+                    String parentPackName = foundPackage.substring(0, lastIndex); // org.ehrbase.fhirbridge.ehr.opt.xxx
 
 
+                    // get compo classes in parent package (there should be just one)
+                    Reflections reflectComposition = new Reflections(parentPackName);
+                    Set<Class<? extends CompositionEntity>> compoClasses = reflectComposition.getSubTypesOf(CompositionEntity.class);
 
+
+                    // get template annotation
+                    for (Class<? extends CompositionEntity> compoClass: compoClasses) {
+
+                        Template templateAnnotation = compoClass.getAnnotation(Template.class);
+                        System.out.println(templateAnnotation.value()); // works!
+                    }
+
+
+                    /*
+                    // correct enum values as string
                     System.out.println("getNames");
                     String[] names = getNames(enumClass);
 
@@ -161,6 +192,7 @@ public class DiagnosticReportRoutes extends AbstractRouteBuilder {
                             System.out.println(f.getName());
                         }
                     }
+                    */
 
 
                     System.out.println("");
