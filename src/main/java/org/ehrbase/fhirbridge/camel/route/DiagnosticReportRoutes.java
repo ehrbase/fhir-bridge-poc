@@ -20,7 +20,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.jpa.searchparam.SearchParameterMap;
 import ca.uhn.fhir.model.api.IQueryParameterType;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.openehr.aql.AqlConstants;
+//import org.apache.camel.component.openehr.aql.AqlConstants;
 import org.ehrbase.client.annotations.Template;
 import org.ehrbase.client.aql.parameter.ParameterValue;
 import org.ehrbase.client.aql.query.Query;

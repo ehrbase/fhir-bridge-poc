@@ -50,7 +50,11 @@ public class PatientRoutes extends AbstractRouteBuilder {
         // Route: Find Patient
         from("patient-find:consumer?fhirContext=#fhirContext&lazyLoadBundles=true")
             .routeId("find-patient-route")
-            .process("findPatientProcessor");
+            .choice()
+                .when(isDatabaseSearchMode())
+                    .process("findPatientProcessor")
+                .otherwise()
+                    .process("findPatientOpenehrProcessor");
 
         // @formatter:on
     }
